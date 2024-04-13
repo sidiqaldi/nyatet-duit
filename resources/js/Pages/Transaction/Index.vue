@@ -15,10 +15,10 @@ defineProps<{
     <Head title="Transactions" />
 
     <AuthenticatedLayout>
-        <div class="relative shadow-md sm:rounded-lg">
+        <div class="relative shadow-sm sm:rounded-lg border dark:border-gray-600">
             <TableHeader />
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border dark:border-gray-600">
             <TableContent :transactions="transactions"/>
         </div>
     </AuthenticatedLayout>

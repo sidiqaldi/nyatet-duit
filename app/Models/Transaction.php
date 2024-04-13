@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int category_id
  * @property float amount
  * @property string description
+ * @property string date
  * @property ?Category category
  */
 class Transaction extends Model
@@ -25,7 +26,15 @@ class Transaction extends Model
         'category_id',
         'amount',
         'description',
+        'date',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date',
+        ];
+    }
 
     public function category(): BelongsTo
     {

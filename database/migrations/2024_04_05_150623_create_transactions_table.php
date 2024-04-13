@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('type');
             $table->decimal('amount', 15, 2);
             $table->string('description', 250)->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }

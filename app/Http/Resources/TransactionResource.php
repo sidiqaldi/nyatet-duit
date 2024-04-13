@@ -23,9 +23,10 @@ class TransactionResource extends JsonResource
             'id' => $transaction->id,
             'category' => $transaction->category->name ?? 'Others',
             'type_id' => $transaction->type,
-            'type' => TransactionType::fromName($transaction->type),
+            'type' => TransactionType::from($transaction->type)->name,
             'amount' => $transaction->amount,
             'description' => $transaction->description,
+            'date' => $transaction->date,
         ];
     }
 }

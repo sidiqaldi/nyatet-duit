@@ -12,20 +12,26 @@ export interface Category{
     name: string;
 }
 
-export interface ListCategory {
-    [Type.Expense] : Category[];
-    [Type.Income] : Category[];
-}
-
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User;
-        categories: ListCategory;
+        categories: Record<number, Category[]>;
     };
 };
 
+export interface Meta{
+    current_page: number;
+    from?: number;
+    last_page: number;
+    links: Array;
+    path: string;
+    per_page: number;
+    to?: number;
+    total: number;
+}
+
 export interface TransactionCollection {
     data: Array;
-    meta?: Object;
-    links?: Object;
+    meta: Meta;
+    links: Object;
 }

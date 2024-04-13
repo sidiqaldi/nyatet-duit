@@ -10,13 +10,14 @@ import InputError from './InputError.vue';
 import SelectInput from './SelectInput.vue';
 import InputLabel from './InputLabel.vue';
 import TextareaInput from './TextareaInput.vue';
+import Type from '@/Enums/TransactionType';
 
 const openingInput = ref(false);
 
 const categories = usePage().props.auth.categories;
 
 const form = useForm({
-    type: TransactionType.Expense,
+    type: Type.Expense as any,
     category_id: null,
     amount: null,
     description: '',
@@ -105,7 +106,8 @@ const submitTransaction = () => {
                         <div class="py-2">
                             <div class="flex justify-between">
                                 <InputLabel class="mb-2" for="amount">Amount</InputLabel>
-                                <span class="text-primary-600">{{ formatNumber(form.amount) }}</span>
+                                <span class="text-primary-700" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
+                                <span class="text-red-800" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
                             <TextInput id="amount" class="w-full" type="number" required v-model="form.amount" min="0" max="10000000000"/>
                             <InputError :message="form.errors.amount" class="mt-2" />

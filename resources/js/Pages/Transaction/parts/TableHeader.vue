@@ -1,5 +1,13 @@
+<script setup lang="ts">
+import Type from '@/Enums/TransactionType';
+import { useForm } from '@inertiajs/vue3';
+
+const form = useForm({
+    type: null,
+})
+</script>
 <template>
-    <div class="relative bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+    <div class="relative bg-white dark:bg-gray-800">
         <div class="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
             <div class="w-full md:w-1/2">
             <form class="flex items-center">
@@ -43,6 +51,25 @@
                     </button>
                     <!-- Dropdown menu -->
                     <div id="filterDropdown" class="z-10 hidden w-48 p-3 bg-white rounded-lg shadow dark:bg-gray-700">
+                        <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
+                            Type
+                        </h6>
+                        <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
+                            <li class="flex items-center">
+                                <input :id="'type-all'" type="radio" :value="null" v-model="form.type"
+                                    class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                <label :for="'type-all'" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    All
+                                </label>
+                            </li>
+                            <li class="flex items-center" v-for="(value, name) in Type">
+                                <input :id="'type-'+name" type="radio" :value="value" v-model="form.type"
+                                    class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
+                                <label :for="'type-'+name" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    {{ name }}
+                                </label>
+                            </li>
+                        </ul>
                         <h6 class="mb-3 text-sm font-medium text-gray-900 dark:text-white">
                             Category
                         </h6>
