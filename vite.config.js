@@ -6,8 +6,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input:  {
-                app: 'resources/js/app.js',
-                static: 'resources/js/static.js'
+                app: 'resources/js/app.ts',
+                static: 'resources/js/static.ts',
             },
             refresh: true,
         }),
