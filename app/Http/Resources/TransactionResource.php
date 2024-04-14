@@ -26,7 +26,7 @@ class TransactionResource extends JsonResource
             'type' => TransactionType::from($transaction->type)->name,
             'amount' => $transaction->amount,
             'description' => $transaction->description,
-            'date' => $transaction->date,
+            'date' => $transaction->date->format('Y-m-d'),
         ];
     }
 }

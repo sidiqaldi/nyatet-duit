@@ -43,8 +43,8 @@ const formatNumber = (number: number|null): string => {
         </thead>
         <tbody>
             <template v-for="transaction in transactions.data">
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-3 py-3">
+                <tr class="text-xs bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-3 py-3 font-bold text-nowrap">
                         {{ transaction.date }}
                     </td>
                     <td class="px-3 py-3">
@@ -53,17 +53,17 @@ const formatNumber = (number: number|null): string => {
                     <td class="px-3 py-3">
                         <span class="flex gap-1 items-center">
                             <template v-if="transaction.type_id === Type.Income">
-                                <IconCaretUp class="h-3 text-emerald-600"/>
-                                <div class="text-emerald-600 text-xs">{{ formatNumber(transaction.amount) }}</div>
+                                <IconCaretUp class="h-3 text-primary-500 dark:text-primary-400"/>
+                                <div class="text-primary-500 dark:text-primary-400 font-bold">{{ formatNumber(transaction.amount) }}</div>
                             </template>
                             <template v-else>
-                                <IconCaretDown class="h-3 text-red-800"/>
-                                <div class="text-red-800 text-xs">{{ formatNumber(transaction.amount) }}</div>
+                                <IconCaretDown class="h-3 text-red-600 dark:text-red-500"/>
+                                <div class="text-red-600 dark:text-red-500  font-bold">{{ formatNumber(transaction.amount) }}</div>
                             </template>
                         </span>
                     </td>
                     <td class="px-3 py-3">
-                        {{ transaction.description }}
+                        <p class="line-clamp-1 text-wrap">{{ transaction.description }}</p>
                     </td>
                     <td class="flex items-center justify-end px-3 py-3">
                         <IconVerDots />

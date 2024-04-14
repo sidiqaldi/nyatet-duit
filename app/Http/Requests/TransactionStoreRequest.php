@@ -17,6 +17,7 @@ class TransactionStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'date' => ['required', 'date_format:Y-m-d'],
             'type' => ['required', Rule::enum(TransactionType::class)],
             'category_id' => [
                 'nullable',

@@ -20,6 +20,7 @@ const form = useForm({
     type: Type.Expense as any,
     category_id: null,
     amount: null,
+    date: new Date().toJSON().slice(0, 10),
     description: '',
 })
 
@@ -74,6 +75,14 @@ const submitTransaction = () => {
                     <div class="mt-6">
 
                         <div class="py-2">
+                            <div class="flex justify-between">
+                                <InputLabel class="mb-2" for="date">Date</InputLabel>
+                            </div>
+                            <TextInput id="date" type="date" class="w-full" required v-model="form.date"/>
+                            <InputError :message="form.errors.date" class="mt-2" />
+                        </div>
+
+                        <div class="py-2">
                             <span for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</span>
                             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -106,8 +115,8 @@ const submitTransaction = () => {
                         <div class="py-2">
                             <div class="flex justify-between">
                                 <InputLabel class="mb-2" for="amount">Amount</InputLabel>
-                                <span class="text-primary-700" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
-                                <span class="text-red-800" v-else>{{ formatNumber(form.amount) }}</span>
+                                <span class="text-primary-600 dark:text-primary-500 font-bold" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
+                                <span class="text-red-600 dark:text-red-500 font-bold" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
                             <TextInput id="amount" class="w-full" type="number" required v-model="form.amount" min="0" max="10000000000"/>
                             <InputError :message="form.errors.amount" class="mt-2" />
