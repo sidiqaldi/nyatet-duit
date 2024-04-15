@@ -4,16 +4,17 @@ namespace App\Http\Requests;
 
 use App\Enums\TransactionType;
 use App\Models\Category;
-use App\Models\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/**
- * @method User user
- */
-class TransactionStoreRequest extends FormRequest
+class TransactionUpdateRequest extends FormRequest
 {
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
     public function rules(): array
     {
         return [

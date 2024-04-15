@@ -10,7 +10,7 @@ import { Link } from '@inertiajs/vue3';
         <div class="flex flex-wrap justify-between items-center max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="flex justify-start items-center">
                 <Link :href="route('dashboard')" class="flex items-center justify-between mr-4">
-                    <ApplicationLogo class="h-9 me-2"/>
+                    <ApplicationLogo class="size-6 me-2"/>
                     <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">NyatetDuit</span>
                 </Link>
             </div>

@@ -21,7 +21,8 @@ class TransactionResource extends JsonResource
 
         return [
             'id' => $transaction->id,
-            'category' => $transaction->category->name ?? 'Others',
+            'category_id' => $transaction->category_id,
+            'category' => $transaction->category->name ?? 'Uncategorized',
             'type_id' => $transaction->type,
             'type' => TransactionType::from($transaction->type)->name,
             'amount' => $transaction->amount,

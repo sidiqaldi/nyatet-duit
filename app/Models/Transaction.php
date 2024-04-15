@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,5 +41,15 @@ class Transaction extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function scopeDateBetween(Builder $query, $start, $end): Builder
+    {
+        return $query->whereBetween('date', [$start, $end]);
+    }
+
+    public function scopeSearch(Builder $query, $search): Builder
+    {
+        return $query->where('description', 'like', "%$search%");
     }
 }

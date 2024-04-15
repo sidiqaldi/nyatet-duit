@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { TransactionCollection } from '@/types';
+import { TransactionCollection, TransactionModel } from '@/types';
 import Type from '@/Enums/TransactionType';
 import IconCaretUp from '@/Components/IconCaretUp.vue';
 import IconCaretDown from '@/Components/IconCaretDown.vue';
-import IconVerDots from '@/Components/IconVerDots.vue';
+import EditTransaction from '@/Components/EditTransaction.vue';
+import { ref } from 'vue';
 
 defineProps<{
     transactions: TransactionCollection;
 }>();
+
+const openEditTransaction = ref(null) as any;
 
 const formatNumber = (number: number|null): string => {
     if (number === null) {
@@ -18,6 +21,14 @@ const formatNumber = (number: number|null): string => {
         currency: 'IDR',
     });
     return currency.format(number);
+}
+
+const handleEditTransaction = (transcation: TransactionModel) => {
+    openEditTransaction.value = transcation;
+}
+
+const closeEditTransaction = () => {
+    openEditTransaction.value = null;
 }
 </script>
 <template>
@@ -43,14 +54,14 @@ const formatNumber = (number: number|null): string => {
         </thead>
         <tbody>
             <template v-for="transaction in transactions.data">
-                <tr class="text-xs bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-3 py-3 font-bold text-nowrap">
+                <tr @click="handleEditTransaction(transaction)" class="text-sm bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td class="px-3 py-4 font-bold text-nowrap">
                         {{ transaction.date }}
                     </td>
-                    <td class="px-3 py-3">
+                    <td class="px-3 py-4">
                         {{ transaction.category }}
                     </td>
-                    <td class="px-3 py-3">
+                    <td class="px-3 py-4">
                         <span class="flex gap-1 items-center">
                             <template v-if="transaction.type_id === Type.Income">
                                 <IconCaretUp class="h-3 text-primary-500 dark:text-primary-400"/>
@@ -62,11 +73,10 @@ const formatNumber = (number: number|null): string => {
                             </template>
                         </span>
                     </td>
-                    <td class="px-3 py-3">
+                    <td class="px-3 py-4">
                         <p class="line-clamp-1 text-wrap">{{ transaction.description }}</p>
                     </td>
                     <td class="flex items-center justify-end px-3 py-3">
-                        <IconVerDots />
                     </td>
                 </tr>
             </template>
@@ -79,4 +89,6 @@ const formatNumber = (number: number|null): string => {
             </template>
         </tbody>
     </table>
+
+    <EditTransaction v-if="openEditTransaction" :transaction="openEditTransaction" @close="closeEditTransaction" />
 </template>

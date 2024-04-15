@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { TransactionModel } from '@/types';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -11,23 +12,44 @@ import SelectInput from './SelectInput.vue';
 import InputLabel from './InputLabel.vue';
 import TextareaInput from './TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
+import { onMounted } from 'vue';
 
-const openingInput = ref(false);
+const emit = defineEmits<{
+    (e: 'close', id: number): void
+}>()
 
 const categories = usePage().props.auth.categories;
+const props = defineProps<{
+    transaction: TransactionModel
+}>();
 
 const form = useForm({
     type: Type.Expense as any,
-    category_id: "",
-    amount: null,
-    date: new Date().toJSON().slice(0, 10),
-    description: '',
-})
+    category_id: null as any,
+    amount: null as any,
+    date: '' as any,
+    description: '' as any,
+});
+
+const modalOpened = ref(false);
 
 const closeModal = () => {
-    openingInput.value = false;
-    form.reset();
-}
+    modalOpened.value = false;
+
+    setTimeout(() => emit('close', props.transaction.id), 500);
+};
+
+onMounted(() => {
+    if (props.transaction) {
+        modalOpened.value = true;
+    }
+
+    form.type = props.transaction.type_id;
+    form.category_id = props.transaction.category_id;
+    form.amount = props.transaction.amount;
+    form.date = props.transaction.date;
+    form.description = props.transaction.description;
+})
 
 const formatNumber = (number: number|null): string => {
     if (number === null) {
@@ -41,7 +63,7 @@ const formatNumber = (number: number|null): string => {
 }
 
 const submitTransaction = () => {
-    form.post(route('transactions.store'), {
+    form.put(route('transactions.update', props.transaction.id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -54,18 +76,12 @@ const submitTransaction = () => {
 </script>
 <template>
     <div class="flex items-center justify-center">
-        <button @click="openingInput = true" data-tooltip-target="tooltip-new" type="button" class="inline-flex items-center justify-center w-10 h-10 font-medium bg-primary-600 rounded-full hover:bg-primary-700 group focus:ring-4 focus:ring-primary-300 focus:outline-none dark:focus:ring-primary-800">
-            <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-            </svg>
-            <span class="sr-only">New item</span>
-        </button>
 
-        <Modal :show="openingInput">
+        <Modal :show="modalOpened">
             <div class="py-8 px-6">
                 <form @submit.prevent="submitTransaction" class="mx-auto">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Add new transaction
+                        Edit Transaction
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
