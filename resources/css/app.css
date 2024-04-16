@@ -11,3 +11,9 @@ option[value=""][disabled] {
 option {
     color: black;
 }
+
+@layer components {
+    .icon-bottom {
+        @apply size-6 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500
+    }
+}

@@ -2,9 +2,9 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import TableHeader from '@/Pages/Transaction/parts/TableHeader.vue';
-import TableContent from '@/Pages/Transaction/parts/TableContent.vue';
-import Pagination from '@/Pages/Transaction/parts/Pagination.vue';
+import TableHeader from '@/Pages/Transaction/Partials/TableHeader.vue';
+import TableContent from '@/Pages/Transaction/Partials/TableContent.vue';
+import Pagination from '@/Pages/Transaction/Partials/Pagination.vue';
 import { TransactionCollection } from '@/types';
 
 defineProps<{
@@ -17,7 +17,7 @@ defineProps<{
     <Head title="Transactions" />
 
     <AuthenticatedLayout>
-        <div class="relative shadow-sm sm:rounded-lg border dark:border-gray-600">
+        <div class="relative shadow-sm sm:rounded-lg">
             <TableHeader :date_between="date_between"/>
         </div>
 
@@ -29,7 +29,7 @@ defineProps<{
             </span>
         </div>
 
-        <div class="relative overflow-x-auto shadow-sm sm:rounded-lg border dark:border-gray-600">
+        <div class="relative overflow-x-auto shadow-sm sm:rounded-lg">
             <TableContent :transactions="transactions"/>
         </div>
 
