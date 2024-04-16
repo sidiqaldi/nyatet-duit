@@ -16,4 +16,13 @@ class TransactionPolicy
 
         return Response::denyAsNotFound();
     }
+
+    public function delete(User $user, Transaction $transaction): Response
+    {
+        if ($transaction->user_id === $user->id) {
+            return Response::allow();
+        }
+
+        return Response::denyAsNotFound();
+    }
 }

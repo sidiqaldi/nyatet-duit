@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionType;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
+use App\Utils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -21,17 +23,19 @@ class HomeController extends Controller
 
         $totalBalance = $totalIncome - $totalExpense;
 
-        $expense = QueryBuilder::for(Transaction::class)
-            ->defaultSort(['-date', '-created_at'])
-            ->where('user_id', $request->user()->id)
-            ->where('type', TransactionType::Expense)
-            ->limit(5)
-            ->get();
+        [$start, $end] = Utils::defaultDate();
 
-        $income = QueryBuilder::for(Transaction::class)
+        $totalExpenseThisMonth = Transaction::where('type', TransactionType::Expense)
+            ->dateBetween($start, $end)
+            ->sum('amount');
+
+        $totalIncomeThisMonth = Transaction::where('type', TransactionType::Income)
+            ->dateBetween($start, $end)
+            ->sum('amount');
+
+        $transactions = QueryBuilder::for(Transaction::class)
             ->defaultSort(['-date', '-created_at'])
             ->where('user_id', $request->user()->id)
-            ->where('type', TransactionType::Income)
             ->limit(5)
             ->get();
 
@@ -40,12 +44,11 @@ class HomeController extends Controller
             return $response->json();
         });
 
-        return Inertia::render('Dashboard', [
-            'total_balance' => $totalBalance,
-            'latest_transactions' => [
-                'expense' => $expense,
-                'income' => $income,
-            ],
+        return Inertia::render('Dashboard/Index', [
+            'totalBalance' => $totalBalance,
+            'totalExpense' => $totalExpenseThisMonth,
+            'totalIncome' => $totalIncomeThisMonth,
+            'latestTransactions' => TransactionResource::collection($transactions),
             'news' => $news,
         ]);
     }

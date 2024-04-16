@@ -13,6 +13,7 @@ import InputLabel from './InputLabel.vue';
 import TextareaInput from './TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import { onMounted } from 'vue';
+import DangerButton from './DangerButton.vue';
 
 const emit = defineEmits<{
     (e: 'close', id: number): void
@@ -32,6 +33,8 @@ const form = useForm({
 });
 
 const modalOpened = ref(false);
+
+const showDeleteConfirmation = ref(false);
 
 const closeModal = () => {
     modalOpened.value = false;
@@ -64,6 +67,25 @@ const formatNumber = (number: number|null): string => {
 
 const submitTransaction = () => {
     form.put(route('transactions.update', props.transaction.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            closeModal();
+        },
+        onFinish: () => form.reset(),
+    })
+}
+
+const confirmDeletion = () => {
+    showDeleteConfirmation.value = true;
+}
+
+const cancelDeletion = () => {
+    showDeleteConfirmation.value = false;
+}
+
+const deleteTransaction = () => {
+    form.delete(route('transactions.destroy', props.transaction.id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -146,9 +168,21 @@ const submitTransaction = () => {
 
                     </div>
 
-                    <div class="mt-6 flex justify-end">
-                        <SecondaryButton class="mr-2" type="button" @click.prevent="closeModal">cancel</SecondaryButton>
-                        <PrimaryButton type="submit">Submit</PrimaryButton>
+                    <div class="mt-6 flex justify-between">
+                        <div class="flex justify-start">
+                            <DangerButton v-if="!showDeleteConfirmation" class="mr-2" type="button" @click.prevent="confirmDeletion">Delete</DangerButton>
+                            <div v-else>
+                                <p class="text-gray-600 dark:text-gray-400 mb-2">Are you sure?</p>
+                                <div class="flex justify-end">
+                            <SecondaryButton class="mr-2" type="button" @click.prevent="cancelDeletion">cancel</SecondaryButton>
+                            <DangerButton type="button" @click.prevent="deleteTransaction">Delete</DangerButton>
+                        </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end"  v-if="!showDeleteConfirmation" >
+                            <SecondaryButton class="mr-2" type="button" @click.prevent="closeModal">cancel</SecondaryButton>
+                            <PrimaryButton type="submit">Submit</PrimaryButton>
+                        </div>
                     </div>
                 </form>
             </div>
