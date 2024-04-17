@@ -49,7 +49,7 @@ onMounted(() => {
 
     form.type = props.transaction.type_id;
     form.category_id = props.transaction.category_id;
-    form.amount = props.transaction.amount;
+    form.amount = props.transaction.amount < 0 ? -props.transaction.amount : props.transaction.amount;
     form.date = props.transaction.date;
     form.description = props.transaction.description;
 })
@@ -98,7 +98,6 @@ const deleteTransaction = () => {
 </script>
 <template>
     <div class="flex items-center justify-center">
-
         <Modal :show="modalOpened">
             <div class="py-8 px-6">
                 <form @submit.prevent="submitTransaction" class="mx-auto">

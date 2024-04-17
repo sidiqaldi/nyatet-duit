@@ -16,7 +16,6 @@ const dateEnd = ref(props.date_between[1]);
 const form = useForm({
     filter: {
         type: null,
-        date_between: '',
         category_id: [] as number[],
         search: '',
     },
@@ -34,7 +33,6 @@ const handleSearch = () => {
 };
 
 const handleDateBetween = () => {
-    form.filter.date_between = `${dateStart.value},${dateEnd.value}`
 }
 
 const handleFilter = () => {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Category;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @method User user
  */
-class CategoryIndexRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     public function rules(): array
     {

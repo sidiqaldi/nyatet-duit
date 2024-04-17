@@ -3,24 +3,12 @@ import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from '@/Components//TextInput.vue';
 import InputError from '@/Components//InputError.vue';
-import SelectInput from '@/Components/SelectInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import TextareaInput from '@/Components/TextareaInput.vue';
-import DangerButton from '@/Components/DangerButton.vue';
 import Type from '@/Enums/TransactionType';
-import { onMounted } from 'vue';
-
-const emit = defineEmits<{
-    (e: 'close', id: number): void
-}>()
-
-const props = defineProps<{
-    category: any
-}>();
 
 const form = useForm({
     type: Type.Expense as any,
@@ -29,25 +17,16 @@ const form = useForm({
 
 const modalOpened = ref(false);
 
-const showDeleteConfirmation = ref(false);
+const openModal = () => {
+    modalOpened.value = true;
+}
 
 const closeModal = () => {
     modalOpened.value = false;
-
-    setTimeout(() => emit('close', props.category.id), 600);
 };
 
-onMounted(() => {
-    if (props.category) {
-        modalOpened.value = true;
-    }
-
-    form.type = props.category.type_id;
-    form.name = props.category.name;
-})
-
 const submitCategory = () => {
-    form.put(route('transactions.update', props.category.id), {
+    form.post(route('categories.store'), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
@@ -56,35 +35,22 @@ const submitCategory = () => {
         onFinish: () => form.reset(),
     })
 }
-
-const confirmDeletion = () => {
-    showDeleteConfirmation.value = true;
-}
-
-const cancelDeletion = () => {
-    showDeleteConfirmation.value = false;
-}
-
-const deleteCategory = () => {
-    form.delete(route('categories.destroy', props.category.id), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset();
-            closeModal();
-        },
-        onFinish: () => form.reset(),
-    })
-}
-
 </script>
 <template>
-    <div class="flex items-center justify-center">
+    <div>
+        <button
+            @click="openModal"
+            type="button"
+            class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+        >
+            Add new category
+        </button>
 
         <Modal :show="modalOpened">
             <div class="py-8 px-6">
                 <form @submit.prevent="submitCategory" class="mx-auto">
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Edit Category
+                        New Category
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
@@ -123,21 +89,9 @@ const deleteCategory = () => {
 
                     </div>
 
-                    <div class="mt-6 flex justify-between">
-                        <div class="flex justify-start">
-                            <DangerButton v-if="!showDeleteConfirmation" class="mr-2" type="button" @click.prevent="confirmDeletion">Delete</DangerButton>
-                            <div v-else>
-                                <p class="text-gray-600 dark:text-gray-400 mb-2">Are you sure?</p>
-                                <div class="flex justify-end">
-                            <SecondaryButton class="mr-2" type="button" @click.prevent="cancelDeletion">cancel</SecondaryButton>
-                            <DangerButton type="button" @click.prevent="deleteCategory">Delete</DangerButton>
-                        </div>
-                            </div>
-                        </div>
-                        <div class="flex justify-end"  v-if="!showDeleteConfirmation" >
-                            <SecondaryButton class="mr-2" type="button" @click.prevent="closeModal">cancel</SecondaryButton>
-                            <PrimaryButton type="submit">Submit</PrimaryButton>
-                        </div>
+                    <div class="mt-6 flex justify-end">
+                        <SecondaryButton class="mr-2" type="button" @click.prevent="closeModal">cancel</SecondaryButton>
+                        <PrimaryButton type="submit">Submit</PrimaryButton>
                     </div>
                 </form>
             </div>

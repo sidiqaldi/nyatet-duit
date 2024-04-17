@@ -21,8 +21,8 @@
         "vue-tsc": "^1.8.27"
     },
     "dependencies": {
+        "@vuepic/vue-datepicker": "^8.4.0",
         "dayjs": "^1.11.10",
-        "flowbite-datepicker": "^1.2.6",
         "vue-debounce": "^5.0.0"
     }
 }

@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import IconCaretUp from '@/Components/IconCaretUp.vue';
-import IconCaretDown from '@/Components/IconCaretDown.vue';
-
 defineProps<{
     username: string;
     totalBalance: number;
-    totalExpense: number;
-    totalIncome: number;
 }>();
 
 const formatNumber = (number: number|null): string => {
@@ -28,25 +23,10 @@ const formatNumber = (number: number|null): string => {
             <div class="bg-gradient-to-r from-primary-600 via-indigo-400 to-blue-500 inline-block text-transparent bg-clip-text">Let's get started on your financial journey.</div>
         </div>
 
-        <div class="w-full mt-5 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mt-5 lg:mt-0 p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <h5 class="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Your Balance</h5>
             <div class="flex items-baseline text-gray-900 dark:text-white">
-                <span class="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight">{{ formatNumber(totalBalance) }}</span>
-            </div>
-
-
-            <h4 class="mt-10 font-thin text-gray-500 dark:text-gray-400">Income & Expense this month</h4>
-            <div role="list" class="flex my-5 justify-between max-w-sm">
-                <div class="flex items-center align-middle">
-                    <IconCaretUp class="h-3 text-primary-500 dark:text-primary-400"/>
-
-                    <span class="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 sm:ms-3">{{ formatNumber(totalIncome) }}</span>
-                </div>
-                <div class="flex items-center align-middle">
-                    <IconCaretDown class="h-3 text-red-600 dark:text-red-500"/>
-
-                    <span class="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 sm:ms-3">{{ formatNumber(totalExpense) }}</span>
-                </div>
+                <span class="text-2xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">{{ formatNumber(totalBalance) }}</span>
             </div>
         </div>
     </div>

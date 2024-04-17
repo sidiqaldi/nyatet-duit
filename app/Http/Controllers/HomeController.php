@@ -3,27 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionType;
+use App\Http\Requests\HomeRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Utils;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class HomeController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(HomeRequest $request): Response
     {
-        $totalIncome = Transaction::where('type', TransactionType::Income)->sum('amount');
+        $totalBalance = Transaction::sum('amount');
 
-        $totalExpense = Transaction::where('type', TransactionType::Expense)->sum('amount');
+        $period = Utils::handlePeriod($request->period);
 
-        $totalBalance = $totalIncome - $totalExpense;
-
-        [$start, $end] = Utils::defaultDate();
+        [$start, $end] = Utils::defaultDate($period);
 
         $totalExpenseThisMonth = Transaction::where('type', TransactionType::Expense)
             ->dateBetween($start, $end)
@@ -33,23 +31,27 @@ class HomeController extends Controller
             ->dateBetween($start, $end)
             ->sum('amount');
 
+        /** @var LengthAwarePaginator|Collection */
         $transactions = QueryBuilder::for(Transaction::class)
+            ->allowedFilters(Utils::defaultTransactionFilter())
             ->defaultSort(['-date', '-created_at'])
-            ->where('user_id', $request->user()->id)
-            ->limit(5)
-            ->get();
+            ->dateBetween($start, $end)
+            ->paginate(15);
 
-        $news = Cache::remember('news', now()->addDay(), function() {
-            $response = Http::get('https://newsdata.io/api/1/news?apikey=pub_420427c68a089305795a637b3d68095cdaec7&q=uang&country=id&language=id&category=business');
-            return $response->json();
-        });
+        $transactions->withQueryString();
+
+        $balancePeriod = Transaction::where('date', '<=', $end)->sum('amount');
 
         return Inertia::render('Dashboard/Index', [
             'totalBalance' => $totalBalance,
             'totalExpense' => $totalExpenseThisMonth,
             'totalIncome' => $totalIncomeThisMonth,
-            'latestTransactions' => TransactionResource::collection($transactions),
-            'news' => $news,
+            'transactions' => TransactionResource::collection($transactions),
+            'balancePeriod' => $balancePeriod,
+            'period' => [
+                'year' => $period->year,
+                'month' => $period->month,
+            ],
         ]);
     }
 }

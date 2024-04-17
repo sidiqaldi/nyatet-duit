@@ -2,7 +2,7 @@
 import AddTransaction from '@/Components/AddTransaction.vue';
 import IconTransaction from '@/Components/IconTransaction.vue';
 import IconWallet from '@/Components/IconWallet.vue';
-import IconFolder from '@/Components/IconFolder.vue';
+import IconTag from '@/Components/IconTag.vue';
 import NavBottomLink from '@/Components/NavBottomLink.vue';
 </script>
 <template>
@@ -20,7 +20,7 @@ import NavBottomLink from '@/Components/NavBottomLink.vue';
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
             <NavBottomLink position="center" label="Categories" :href="route('categories.index')">
-                <IconFolder class="icon-bottom" />
+                <IconTag class="icon-bottom" />
             </NavBottomLink>
             <button data-tooltip-target="tooltip-profile" type="button" class="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group">
                 <svg class="icon-bottom" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

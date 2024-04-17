@@ -5,12 +5,13 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
-import TextInput from './TextInput.vue';
-import InputError from './InputError.vue';
-import SelectInput from './SelectInput.vue';
-import InputLabel from './InputLabel.vue';
-import TextareaInput from './TextareaInput.vue';
+import TextInput from '@/Components/TextInput.vue';
+import InputError from '@/Components/InputError.vue';
+import SelectInput from '@/Components/SelectInput.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import TextareaInput from '@/Components/TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
+import dayjs from 'dayjs';
 
 const openingInput = ref(false);
 
@@ -20,7 +21,8 @@ const form = useForm({
     type: Type.Expense as any,
     category_id: "",
     amount: null,
-    date: new Date().toJSON().slice(0, 10),
+    time: dayjs().format('HH:mm'),
+    date: dayjs().format('YYYY-MM-DD'),
     description: '',
 })
 

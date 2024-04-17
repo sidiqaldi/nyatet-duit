@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
 import EditCategory from '@/Pages/Category/Partials/EditCategory.vue'
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -43,12 +44,7 @@ const closeEditCategory = () => {
                             Categories help you classify transactions, like income, expenses, or specific spending areas such as groceries or entertainment. Organizing transactions makes tracking spending easier and clearer.
                         </p>
                     </div>
-                    <button
-                        type="button"
-                        class="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
-                    >
-                        Add new category
-                    </button>
+                    <CreateCategory />
                 </caption>
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>

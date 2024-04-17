@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionType;
 use App\Events\TransactionCreated;
 use App\Events\TransactionDeleted;
 use App\Events\TransactionUpdated;
-use App\Http\Requests\TransactionIndexRequest;
-use App\Http\Requests\TransactionStoreRequest;
-use App\Http\Requests\TransactionUpdateRequest;
+use App\Http\Requests\Transaction\IndexRequest;
+use App\Http\Requests\Transaction\StoreRequest;
+use App\Http\Requests\Transaction\UpdateRequest;
 use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Utils;
@@ -21,7 +22,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class TransactionController extends Controller
 {
-    public function index(TransactionIndexRequest $request): Response
+    public function index(IndexRequest $request): Response
     {
         /** @var LengthAwarePaginator|Collection * */
         $transactions = QueryBuilder::for(Transaction::class)
@@ -39,9 +40,13 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function store(TransactionStoreRequest $request): RedirectResponse
+    public function store(StoreRequest $request): RedirectResponse
     {
         $data = $request->validated();
+
+        if ($data['type'] == TransactionType::Expense->value) {
+            $data['amount'] = -$data['amount'];
+        }
 
         $transaction = $request->user()->transactions()->create($data);
 
@@ -50,11 +55,15 @@ class TransactionController extends Controller
         return redirect()->back()->with('success', 'New transaction added.');
     }
 
-    public function update(TransactionUpdateRequest $request, Transaction $transaction)
+    public function update(UpdateRequest $request, Transaction $transaction)
     {
         Gate::authorize('update', $transaction);
 
         $data = $request->validated();
+
+        if ($data['type'] == TransactionType::Expense->value) {
+            $data['amount'] = -$data['amount'];
+        }
 
         $transaction->fill($data);
 

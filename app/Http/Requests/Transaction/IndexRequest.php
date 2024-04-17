@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Transaction;
 
-use App\Models\Category;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,7 +13,7 @@ use Illuminate\Foundation\Http\FormRequest;
  *
  * @method User user
  */
-class TransactionIndexRequest extends FormRequest
+class IndexRequest extends FormRequest
 {
     public function rules(): array
     {

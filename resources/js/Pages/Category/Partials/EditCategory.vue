@@ -3,13 +3,11 @@ import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from '@/Components//TextInput.vue';
 import InputError from '@/Components//InputError.vue';
-import SelectInput from '@/Components/SelectInput.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import TextareaInput from '@/Components/TextareaInput.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Type from '@/Enums/TransactionType';
 import { onMounted } from 'vue';
@@ -47,7 +45,7 @@ onMounted(() => {
 })
 
 const submitCategory = () => {
-    form.put(route('transactions.update', props.category.id), {
+    form.put(route('categories.update', props.category.id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
