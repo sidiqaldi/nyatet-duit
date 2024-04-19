@@ -17,6 +17,15 @@ defineProps<{
         <span class="sr-only">{{ label }}</span>
     </Link>
 
+    <Link v-else-if="position === 'right'"
+        :data-tooltip-target="'tooltip-' + label"
+        :href="href"
+        class="inline-flex flex-col items-center justify-center px-5 rounded-e-full hover:bg-gray-50 dark:hover:bg-gray-800 group"
+    >
+        <slot />
+        <span class="sr-only">{{ label }}</span>
+    </Link>
+
     <Link v-else
         :data-tooltip-target="'tooltip-' + label"
         :href="href"

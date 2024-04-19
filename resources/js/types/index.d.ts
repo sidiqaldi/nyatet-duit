@@ -4,6 +4,9 @@ export interface User {
     name: string;
     email: string;
     email_verified_at: string;
+    currency: string;
+    locale: string;
+    timezone: string;
 }
 
 export interface Category {

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\CategoryDeleted;
+use App\Events\CategoryUpdated;
 use App\Http\Requests\Category\IndexRequest;
 use App\Http\Requests\Category\StoreRequest;
+use App\Http\Requests\Category\UpdateRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
@@ -28,17 +30,21 @@ class CategoryController extends Controller
         return redirect()->back()->with('success', 'New category added.');
     }
 
-    public function update(StoreRequest $request, Category $category)
+    public function update(UpdateRequest $request, Category $category)
     {
         Gate::authorize('update', $category);
 
         $data = $request->validated();
+
+        $oldType = $category->type;
 
         $category->fill($data);
 
         if ($category->isDirty()) {
 
             $category->save();
+
+            CategoryUpdated::dispatch($category, $oldType);
         }
 
         return redirect()->back()->with('success', 'Category edited.');

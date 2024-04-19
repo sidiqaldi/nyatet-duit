@@ -19,18 +19,16 @@ class Utils
     public static function defaultDate(?Carbon $carbon = null)
     {
         if ($carbon == null) {
-            $startMonth = Carbon::now()->startOfMonth();
-
-            $endMonth = Carbon::now()->endOfMonth();
-
-            return [$startMonth->format('Y-m-d'), $endMonth->format('Y-m-d')];
+            return [
+                Carbon::now()->startOfMonth(),
+                Carbon::now()->endOfMonth(),
+            ];
         }
 
-        $startMonth = $carbon->clone()->startOfMonth();
-
-        $endMonth = $carbon->clone()->endOfMonth();
-
-        return [$startMonth->format('Y-m-d'), $endMonth->format('Y-m-d')];
+        return [
+            $carbon->clone()->startOfMonth(),
+            $carbon->clone()->endOfMonth(),
+        ];
     }
 
     public static function handlePeriod($string = null)

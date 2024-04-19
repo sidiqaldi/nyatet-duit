@@ -4,10 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * @property string period
- */
-class HomeRequest extends FormRequest
+class ReportIndexRequest extends FormRequest
 {
     public function rules(): array
     {

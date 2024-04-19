@@ -12,6 +12,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextareaInput from '@/Components/TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import dayjs from 'dayjs';
+import { formatNumber } from '@/utils';
 
 const openingInput = ref(false);
 
@@ -31,17 +32,6 @@ const closeModal = () => {
     form.reset();
 }
 
-const formatNumber = (number: number|null): string => {
-    if (number === null) {
-        number = 0;
-    }
-    let currency = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    });
-    return currency.format(number);
-}
-
 const submitTransaction = () => {
     form.post(route('transactions.store'), {
         preserveScroll: true,
@@ -49,7 +39,6 @@ const submitTransaction = () => {
             form.reset();
             closeModal();
         },
-        onFinish: () => form.reset(),
     })
 }
 

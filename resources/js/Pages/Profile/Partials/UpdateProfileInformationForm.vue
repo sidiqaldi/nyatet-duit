@@ -15,6 +15,9 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    currency: user.currency,
+    locale: user.locale,
+    timezone: user.timezone,
 });
 </script>
 

@@ -1,20 +1,21 @@
 <script setup lang="ts">
+import EditTransaction from '@/Components/EditTransaction.vue';
 import IconCaretUp from '@/Components/IconCaretUp.vue';
 import IconCaretDown from '@/Components/IconCaretDown.vue';
 import IconFilter from '@/Components/IconFilter.vue';
+import Pagination from '@/Pages/Dashboard/Partials/Pagination.vue';
 import Type from '@/Enums/TransactionType';
+import RecapPeriode from './RecapPeriode.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import { dark, activeTheme } from '@/themeVariables';
+import { onBeforeMount, onMounted, ref } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { formatNumber } from '@/utils';
+import type { DatePickerInstance } from "@vuepic/vue-datepicker"
+
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/../css/datepicker.css';
-import {  dark, activeTheme } from '@/themeVariables';
-import { ref } from 'vue';
-import type { DatePickerInstance } from "@vuepic/vue-datepicker"
-import { onMounted } from 'vue';
-import { onBeforeMount } from 'vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
-import dayjs from 'dayjs';
-import IconWallet from '@/Components/IconWallet.vue';
-import EditTransaction from '@/Components/EditTransaction.vue';
+
 
 const props = defineProps<{
     transactions: any;
@@ -33,19 +34,6 @@ const datePeriod = ref({
 
 const darkMode = ref(false);
 
-const displayDate = ref('');
-
-const formatNumber = (number: number | null): string => {
-    if (number === null) {
-        number = 0;
-    }
-    let currency = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    });
-    return currency.format(number);
-};
-
 onBeforeMount(() => {
     darkMode.value = activeTheme.value === dark
 })
@@ -63,8 +51,6 @@ onMounted(() => {
     let formMonth = props.period.month < 10 ? '0' + props.period.month : props.period.month;
 
     form.period = year + '-' + formMonth;
-
-    displayDate.value = dayjs().month(month).year(year).format('MMMM, YYYY')
 })
 
 const form = useForm({
@@ -83,8 +69,6 @@ const changePeriod = (modelData: any) => {
     month = month < 10 ? '0' + month : month;
 
     form.period = modelData.year + '-' + month;
-
-    displayDate.value = dayjs().month(modelData.month).year(modelData.year).format('MMMM, YYYY')
 
     handleFilter();
 }
@@ -136,15 +120,15 @@ const toggleCategorySelection = (categoryId: number) => {
 }
 </script>
 <template>
-    <div class="container mt-8 max-w-7xl mx-auto lg:px-6">
+    <div class="container mt-8 max-w-7xl mx-auto">
         <div class="w-full p-4 sm:py-8 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div class="flex flex-col sm:flex-row items-center justify-between mb-4">
-                <div class="mb-2 sm:mb-0">
+                <div class="mb-4 sm:mb-0">
                     <h5 class="text-xl ml-4 font-bold leading-none text-gray-900 dark:text-white">
                         Transaction Records
                     </h5>
                 </div>
-                <div class="flex items-center gap-2 cursor-pointer justify-end">
+                <div class="mb-4 sm:mb-0 flex items-center gap-2 cursor-pointer justify-center lg:justify-end">
                     <h5 @click="opendatePicker" class="text-sm font-medium text-primary-600 dark:text-primary-500">Change</h5>
                     <div class="flex w-2/3 items-center">
                         <div>
@@ -218,64 +202,14 @@ const toggleCategorySelection = (categoryId: number) => {
                 </div>
             </div>
 
-            <div class="mb-5 px-4 lg:flex lg:gap-2 lg:justify-between border-b">
-                <div>
-                    <div class="font-thin text-gray-500 dark:text-gray-400">Income & Expense <span class="font-normal text-primary-600 dark:text-primary-500">{{ displayDate }}</span></div>
-                    <div role="list" class="flex flex-col sm:flex-row my-5 justify-center lg:justify-start gap-5 lg:gap-2">
-                        <div class="flex items-center align-middle">
-                            <IconCaretUp class="h-3 text-primary-500 dark:text-primary-400"/>
-                            <span class="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ">{{ formatNumber(totalIncome) }}</span>
-                        </div>
-                        <div class="flex items-center align-middle">
-                            <IconCaretDown class="h-3 text-red-600 dark:text-red-500"/>
-                            <span class="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ">{{ formatNumber(totalExpense) }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="items-center align-middle mb-5">
-                    <div class="font-thin mb-4 text-gray-500 dark:text-gray-400">Balance left</div>
-                    <div class="flex items-center align-middle justify-start sm:justify-center">
-                        <IconWallet class="h-3 text-gray-500 dark:text-gray-400"/>
-                        <div class="text-base font-normal leading-tight text-gray-500 dark:text-gray-400 ">{{ formatNumber(balancePeriod) }}</div>
-                    </div>
-                </div>
-            </div>
+            <RecapPeriode
+                :balance-period="balancePeriod"
+                :total-expense="totalExpense"
+                :total-income="totalIncome"
+                :datePeriod="datePeriod"
+            />
 
-            <div v-if="transactions.meta.total" class="flex justify-between items-center px-4 py-2 mb-2 bg-gray-100 rounded dark:bg-gray-900">
-                <div class="text-sm text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-900 dark:text-white">{{ transactions.meta.from }}</span> to
-                    <span class="font-semibold text-gray-900 dark:text-white">{{ transactions.meta.to }}</span> of
-                    <span class="font-semibold text-gray-900 dark:text-white">{{ transactions.meta.total }}</span> Entries
-                </div>
-                <div class="inline-flex xs:mt-0">
-                    <Link
-                        as="button"
-                        v-if="transactions.links.prev"
-                        :href="transactions.links.prev"
-                        preserve-state
-                        preserve-scroll
-                        class="flex items-center justify-center px-3 py-1 text-sm font-medium text-white bg-gray-400 rounded-s hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                        Prev
-                    </Link>
-                    <button v-else disabled class="flex items-center justify-center px-3 py-1 text-sm font-medium text-gray-300 bg-gray-400 rounded-s dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
-                        Prev
-                    </button>
-                    <Link
-                        as="button"
-                        v-if="transactions.links.next"
-                        :href="transactions.links.next"
-                        preserve-state
-                        preserve-scroll
-                        class="flex items-center justify-center px-3 py-1 text-sm font-medium text-white bg-gray-400 border-0 border-s border-gray-300 rounded-e hover:bg-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                    >
-                        Next
-                    </Link>
-                    <button v-else disabled class="flex items-center justify-center px-3 py-1 text-sm font-medium text-gray-300 bg-gray-400 border-0 border-s border-gray-300 rounded-e dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">
-                        Next
-                    </button>
-                </div>
-            </div>
+            <Pagination :transactions="transactions" />
 
             <div class="flow-root">
                 <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700 overflow-auto">
@@ -299,15 +233,15 @@ const toggleCategorySelection = (categoryId: number) => {
                                         {{ transaction.description }}
                                     </p>
                                 </div>
-                                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                <div class="display-nominal inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                     {{ formatNumber(transaction.amount) }}
                                 </div>
                             </div>
                         </li>
                     </template>
                     <template v-if="transactions.meta.total == 0">
-                        <div class="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                            <div class="px-3 pt-3 text-center text-gray-400" colspan="4">
+                        <div class="bg-white dark:bg-gray-800 dark:border-gray-700">
+                            <div class="p-3 text-center text-gray-400" colspan="4">
                                 Oops! It looks like there are no transactions recorded for the selected period. <br/> Start adding transactions to track your finances.
                             </div>
                         </div>

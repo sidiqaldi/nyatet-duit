@@ -14,6 +14,7 @@ import TextareaInput from './TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import { onMounted } from 'vue';
 import DangerButton from './DangerButton.vue';
+import { formatNumber } from '@/utils';
 
 const emit = defineEmits<{
     (e: 'close', id: number): void
@@ -53,17 +54,6 @@ onMounted(() => {
     form.date = props.transaction.date;
     form.description = props.transaction.description;
 })
-
-const formatNumber = (number: number|null): string => {
-    if (number === null) {
-        number = 0;
-    }
-    let currency = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    });
-    return currency.format(number);
-}
 
 const submitTransaction = () => {
     form.put(route('transactions.update', props.transaction.id), {

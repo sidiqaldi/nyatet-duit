@@ -51,7 +51,6 @@ const submitCategory = () => {
             form.reset();
             closeModal();
         },
-        onFinish: () => form.reset(),
     })
 }
 

@@ -22,6 +22,8 @@
     },
     "dependencies": {
         "@vuepic/vue-datepicker": "^8.4.0",
+        "chart.js": "^4.4.2",
+        "currency-list": "^1.0.8",
         "dayjs": "^1.11.10",
         "vue-debounce": "^5.0.0"
     }

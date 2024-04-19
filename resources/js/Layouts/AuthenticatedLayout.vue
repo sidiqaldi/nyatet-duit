@@ -13,7 +13,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="antialiased bg-gray-50 dark:bg-gray-900">
+    <div class="antialiased">
         <NavBar />
 
         <main class="p-4 min-h-screen h-auto pt-20 pb-24">
