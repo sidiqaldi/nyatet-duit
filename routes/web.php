@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\HomeController;
@@ -19,34 +20,21 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-});
 
-Route::middleware('auth')->group(function () {
-    Route::post('transactions', [TransactionController::class, 'store'])->name('transactions.store');
-    Route::put('transactions/{transaction}', [TransactionController::class, 'update'])->name('transactions.update');
-    Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
-});
+    Route::resource('transactions', TransactionController::class)->only('store', 'update', 'destroy');
 
-Route::middleware('auth')->group(function () {
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
-});
 
-Route::middleware('auth')->group(function () {
-    Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::post('categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-});
+    Route::resource('categories', CategoryController::class)->only('index', 'store', 'update', 'destroy');
 
-Route::middleware('auth')->group(function () {
-    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+    Route::resource('backups', BackupController::class)
+        ->only('index', 'show', 'update')
+        ->parameters(['backups' => 'period']);
 
-Route::middleware('auth')->group(function () {
+    Route::resource('profile', ProfileController::class)->only('index', 'store', 'destroy');
+
     Route::patch('configuration', [ConfigurationController::class, 'update'])->name('configuration.update');
 });
 

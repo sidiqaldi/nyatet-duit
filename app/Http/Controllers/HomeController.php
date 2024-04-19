@@ -17,7 +17,7 @@ class HomeController extends Controller
 {
     public function index(HomeRequest $request): Response
     {
-        $totalBalance = Transaction::sum('amount');
+        $totalBalance = Transaction::currentUser()->sum('amount');
 
         $period = Utils::handlePeriod($request->period);
 
@@ -25,10 +25,12 @@ class HomeController extends Controller
 
         $totalExpenseThisMonth = Transaction::where('type', TransactionType::Expense)
             ->dateBetween($start, $end)
+            ->currentUser()
             ->sum('amount');
 
         $totalIncomeThisMonth = Transaction::where('type', TransactionType::Income)
             ->dateBetween($start, $end)
+            ->currentUser()
             ->sum('amount');
 
         /** @var LengthAwarePaginator|Collection */
@@ -36,11 +38,14 @@ class HomeController extends Controller
             ->allowedFilters(Utils::defaultTransactionFilter())
             ->defaultSort(['-date', '-created_at'])
             ->dateBetween($start, $end)
+            ->currentUser()
             ->paginate(15);
 
         $transactions->withQueryString();
 
-        $balancePeriod = Transaction::where('date', '<=', $end)->sum('amount');
+        $balancePeriod = Transaction::where('date', '<=', $end)
+            ->currentUser()
+            ->sum('amount');
 
         return Inertia::render('Dashboard/Index', [
             'totalBalance' => $totalBalance,

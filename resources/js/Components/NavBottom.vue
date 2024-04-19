@@ -27,7 +27,7 @@ import NavBottomLink from '@/Components/NavBottomLink.vue';
                 <IconTag class="icon-bottom" />
             </NavBottomLink>
 
-            <NavBottomLink position="right" label="Backup" :href="route('categories.index')">
+            <NavBottomLink position="right" label="Backup" :href="route('backups.index')">
                 <IconArchive class="icon-bottom" />
             </NavBottomLink>
         </div>

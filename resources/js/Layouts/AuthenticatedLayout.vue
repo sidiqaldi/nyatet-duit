@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { initFlowbite } from 'flowbite'
 import NavBar from '@/Components/NavBar.vue';
 import NavBottom from '@/Components/NavBottom.vue';
 import { onMounted } from 'vue';
+import { useCategoriesStore } from '@/store';
+import { usePage } from '@inertiajs/vue3';
 
-const showingNavigationDropdown = ref(false);
+const categoryStore = useCategoriesStore()
 
 onMounted(() => {
     initFlowbite();
+
+    categoryStore.init(usePage().props.auth.categories)
 })
+
 </script>
 
 <template>

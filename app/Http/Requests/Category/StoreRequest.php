@@ -27,6 +27,7 @@ class StoreRequest extends FormRequest
                 'required',
                 Rule::enum(TransactionType::class),
             ],
+            'description' => ['nullable', 'max:200'],
         ];
     }
 }

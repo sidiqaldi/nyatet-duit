@@ -12,10 +12,10 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { formatNumber } from '@/utils';
 import type { DatePickerInstance } from "@vuepic/vue-datepicker"
+import { useCategoriesStore } from '@/store';
 
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/../css/datepicker.css';
-
 
 const props = defineProps<{
     transactions: any;
@@ -25,7 +25,7 @@ const props = defineProps<{
     balancePeriod: number;
 }>();
 
-const categories = usePage().props.auth.categories;
+const categoryStore = useCategoriesStore()
 
 const datePeriod = ref({
     month: new Date().getMonth(),
@@ -179,7 +179,7 @@ const toggleCategorySelection = (categoryId: number) => {
                                         Category
                                     </h6>
                                     <ul class="space-y-2 text-sm" aria-labelledby="dropdownDefault">
-                                        <template v-for="category in categories[form.filter.type]">
+                                        <template v-for="category in categoryStore.list[form.filter.type]">
                                             <li class="flex items-center">
                                                 <input
                                                     type="checkbox"

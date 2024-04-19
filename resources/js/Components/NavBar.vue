@@ -552,7 +552,7 @@ import { Link } from '@inertiajs/vue3';
                     aria-labelledby="dropdown"
                     >
                     <li>
-                        <ResponsiveNavLink :href="route('profile.edit')"> My Profile </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('profile.index')"> My Profile </ResponsiveNavLink>
                     </li>
                     <li>
                         <a

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Category::class)->nullable();
             $table->unsignedSmallInteger('type');
             $table->decimal('amount', 15, 2);

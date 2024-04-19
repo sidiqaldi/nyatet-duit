@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\CategoryUpdated;
 use App\Models\Transaction;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 
 class UpdateTransactionsOnCategoryChanged
@@ -19,7 +17,7 @@ class UpdateTransactionsOnCategoryChanged
         if ($event->category->type != $event->oldType) {
             Transaction::where('category_id', $event->category->id)
                 ->update([
-                    'amount' => DB::raw("-amount"),
+                    'amount' => DB::raw('-amount'),
                     'type' => $event->category->type,
                 ]);
         }

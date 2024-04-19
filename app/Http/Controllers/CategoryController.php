@@ -25,7 +25,11 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
 
-        $request->user()->categories()->create($data);
+        $category = $request->user()->categories()->create($data);
+
+        if ($request->requestNonInertia) {
+            return response()->json(['data' => $category]);
+        }
 
         return redirect()->back()->with('success', 'New category added.');
     }

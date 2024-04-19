@@ -44,13 +44,13 @@ class ReportController extends Controller
             ->with('category')
             ->where('type', TransactionType::Expense)
             ->dateBetween($start, $end)
-            ->where('user_id', request()->user()->id)
+            ->currentUser()
             ->get();
 
         $data = [];
 
         /** @var Transaction */
-        foreach($expenses as $transaction) {
+        foreach ($expenses as $transaction) {
             $data[$transaction->category->name] = isset($data[$transaction->category->name])
                 ? $data[$transaction->category->name] + $transaction->amount
                 : $transaction->amount;
@@ -60,11 +60,11 @@ class ReportController extends Controller
             'labels' => array_keys($data),
             'datasets' => [
                 [
-                    'label' => 'Total expense',
+                    'label' => 'Total Expense',
                     'data' => array_values($data),
                     'hoverOffset' => 4,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -75,12 +75,13 @@ class ReportController extends Controller
             ->with('category')
             ->where('type', TransactionType::Income)
             ->dateBetween($start, $end)
+            ->currentUser()
             ->get();
 
         $data = [];
 
         /** @var Transaction */
-        foreach($incomes as $transaction) {
+        foreach ($incomes as $transaction) {
             $data[$transaction->category->name] = isset($data[$transaction->category->name])
                 ? $data[$transaction->category->name] + $transaction->amount
                 : $transaction->amount;
@@ -90,11 +91,11 @@ class ReportController extends Controller
             'labels' => array_keys($data),
             'datasets' => [
                 [
-                    'label' => 'Total expense',
+                    'label' => 'Total Income',
                     'data' => array_values($data),
                     'hoverOffset' => 4,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -170,7 +171,7 @@ class ReportController extends Controller
                     'borderColor' => 'rgb(176, 224, 230)',
                     'tension' => 0.1,
                 ],
-            ]
+            ],
         ];
     }
 }

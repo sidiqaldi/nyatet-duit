@@ -8,8 +8,8 @@ defineProps<{
 </script>
 
 <template>
-    <div class="flex-none rounded-lg max-w-7xl mx-auto bg-gradient-to-b sm:p-5 from-transparent via-white from-10% to-white dark:from-transparent dark:to-gray-800">
-        <div class="p-6 overflow-hidden rounded-lg">
+    <div class="pt-5 sm:p-5 flex-none rounded-lg max-w-7xl mx-auto bg-gradient-to-b from-gray-100 to-white dark:bg-transparent dark:bg-gradient-to-b dark:from-transparent dark:to-gray-800">
+        <div class="pb-5 px-4 overflow-hidden rounded-lg">
             <div class="text-gray-900 dark:text-gray-100 ">Welcome <span class="font-bold">{{ username }}!</span></div>
             <div class="bg-gradient-to-r from-primary-600 via-indigo-400 to-blue-500 inline-block text-transparent bg-clip-text">Let's get started on your financial journey.</div>
         </div>

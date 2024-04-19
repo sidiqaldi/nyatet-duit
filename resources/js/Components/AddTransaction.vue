@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
@@ -13,10 +13,12 @@ import TextareaInput from '@/Components/TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import dayjs from 'dayjs';
 import { formatNumber } from '@/utils';
+import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
+import { useCategoriesStore } from '@/store';
 
 const openingInput = ref(false);
 
-const categories = usePage().props.auth.categories;
+const categoryStore = useCategoriesStore()
 
 const form = useForm({
     type: Type.Expense as any,
@@ -35,11 +37,16 @@ const closeModal = () => {
 const submitTransaction = () => {
     form.post(route('transactions.store'), {
         preserveScroll: true,
+        preserveState: false,
         onSuccess: () => {
             form.reset();
             closeModal();
         },
     })
+}
+
+const updateCategory = (id: any) => {
+    form.category_id = id
 }
 
 </script>
@@ -67,7 +74,7 @@ const submitTransaction = () => {
 
                         <div class="py-2">
                             <div class="flex justify-between">
-                                <InputLabel class="mb-2" for="date">Date</InputLabel>
+                                <InputLabel class="mb-2" for="date">Date <span class="text-red-500">*</span></InputLabel>
                             </div>
                             <TextInput id="date" type="date" class="w-full text-sm" required v-model="form.date"/>
                             <InputError :message="form.errors.date" class="mt-2" />
@@ -93,10 +100,13 @@ const submitTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <InputLabel class="mb-2" for="category">Category</InputLabel>
+                            <div class="mb-2 flex justify-between">
+                                <InputLabel for="category">Category <span class="text-red-500">*</span></InputLabel>
+                                <CreateCategory :ajax="true" :default="form.type" @new-category-added="updateCategory" />
+                            </div>
                             <SelectInput required v-model="form.category_id" id="category" placeholder="please choose">
                                 <option value="" disabled selected>Select category...</option>
-                                <template v-for="(category) in categories[form.type]">
+                                <template v-for="(category) in categoryStore.list[form.type]">
                                     <option :value="category.id">{{ category.name }}</option>
                                 </template>
                             </SelectInput>
@@ -104,8 +114,8 @@ const submitTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <div class="flex justify-between">
-                                <InputLabel class="mb-2" for="amount">Amount</InputLabel>
+                            <div class="flex mb-2 justify-between">
+                                <InputLabel for="amount">Amount <span class="text-red-500">*</span></InputLabel>
                                 <span class="text-primary-600 dark:text-primary-500 font-bold" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
                                 <span class="text-red-600 dark:text-red-500 font-bold" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
@@ -114,8 +124,8 @@ const submitTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <InputLabel class="mb-2" for="description">Description</InputLabel>
-                            <TextareaInput id="description" v-model="form.description" rows="4" placeholder="Add a quick note about this transaction..." />
+                            <InputLabel class="mb-2" for="description">Description <span class="font-thin">(optional)</span></InputLabel>
+                            <TextareaInput id="description" v-model="form.description" rows="4" placeholder="Add a quick note about this transaction..." maxlength="200"/>
                             <InputError :message="form.errors.description" class="mt-2" />
                         </div>
 

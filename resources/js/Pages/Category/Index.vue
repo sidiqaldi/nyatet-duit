@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Type from '@/Enums/TransactionType';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
 import EditCategory from '@/Pages/Category/Partials/EditCategory.vue'
@@ -10,17 +11,6 @@ defineProps<{
 }>();
 
 const openEditCategory = ref(null) as any;
-
-const formatNumber = (number: number|null): string => {
-    if (number === null) {
-        number = 0;
-    }
-    let currency = new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-    });
-    return currency.format(number);
-}
 
 const handleEditCategory = (category: any) => {
     openEditCategory.value = category;
@@ -44,7 +34,7 @@ const closeEditCategory = () => {
                             Categories help you classify transactions, like income, expenses, or specific spending areas such as groceries or entertainment. Organizing transactions makes tracking spending easier and clearer.
                         </p>
                     </div>
-                    <CreateCategory />
+                    <CreateCategory type="button" :default="Type.Expense"/>
                 </caption>
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -53,6 +43,9 @@ const closeEditCategory = () => {
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Type
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Description
                         </th>
                     </tr>
                 </thead>
@@ -64,6 +57,17 @@ const closeEditCategory = () => {
                             </th>
                             <td class="px-6 py-4">
                                 {{ category.type }}
+                            </td>
+                            <td class="px-6 py-4" colspan="2">
+                                {{ category.description }}
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-if="!categories.data.length">
+                        <tr class="bg-white dark:bg-gray-800 dark:border-gray-700">
+                            <td class="p-10 text-center text-gray-400" colspan="4">
+                                It looks like you haven't created any categories for your transactions yet.
+                                <br/> Categories help you organize your spending and track your expenses more effectively.
                             </td>
                         </tr>
                     </template>

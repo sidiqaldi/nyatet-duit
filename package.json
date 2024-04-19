@@ -25,6 +25,7 @@
         "chart.js": "^4.4.2",
         "currency-list": "^1.0.8",
         "dayjs": "^1.11.10",
+        "pinia": "^2.1.7",
         "vue-debounce": "^5.0.0"
     }
 }

@@ -39,4 +39,11 @@ class Utils
 
         return Carbon::now();
     }
+
+    public static function defaultDateByPeriod($string)
+    {
+        $period = self::handlePeriod($string);
+
+        return self::defaultDate($period);
+    }
 }

@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 
 /**
  * @property Category category
+ *
  * @method User user
  */
 class UpdateRequest extends FormRequest
@@ -31,6 +32,7 @@ class UpdateRequest extends FormRequest
                 'required',
                 Rule::enum(TransactionType::class),
             ],
+            'description' => ['nullable', 'max:200'],
         ];
     }
 }

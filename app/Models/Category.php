@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @property int id
- * @property string name
  * @property int type
+ * @property string name
+ * @property string description
  */
 class Category extends Model
 {
@@ -16,7 +19,13 @@ class Category extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
         'type',
+        'name',
+        'description',
     ];
+
+    public function scopeCurrentUser(Builder $query): Builder
+    {
+        return $query->where('user_id', Auth::id());
+    }
 }

@@ -4,7 +4,7 @@ import { TransactionModel } from '@/types';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from './TextInput.vue';
 import InputError from './InputError.vue';
@@ -15,12 +15,15 @@ import Type from '@/Enums/TransactionType';
 import { onMounted } from 'vue';
 import DangerButton from './DangerButton.vue';
 import { formatNumber } from '@/utils';
+import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
+import { useCategoriesStore } from '@/store';
 
 const emit = defineEmits<{
     (e: 'close', id: number): void
 }>()
 
-const categories = usePage().props.auth.categories;
+const categoryStore = useCategoriesStore()
+
 const props = defineProps<{
     transaction: TransactionModel
 }>();
@@ -85,6 +88,10 @@ const deleteTransaction = () => {
     })
 }
 
+const updateCategory = (id: any) => {
+    form.category_id = id
+}
+
 </script>
 <template>
     <div class="flex items-center justify-center">
@@ -103,7 +110,7 @@ const deleteTransaction = () => {
 
                         <div class="py-2">
                             <div class="flex justify-between">
-                                <InputLabel class="mb-2" for="date">Date</InputLabel>
+                                <InputLabel class="mb-2" for="date">Date <span class="text-red-500">*</span></InputLabel>
                             </div>
                             <TextInput id="date" type="date" class="w-full text-sm" required v-model="form.date"/>
                             <InputError :message="form.errors.date" class="mt-2" />
@@ -129,10 +136,13 @@ const deleteTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <InputLabel class="mb-2" for="category">Category</InputLabel>
+                            <div class="mb-2 flex justify-between">
+                                <InputLabel for="category">Category <span class="text-red-500">*</span></InputLabel>
+                                <CreateCategory :ajax="true" :default="form.type" @new-category-added="updateCategory" />
+                            </div>
                             <SelectInput required v-model="form.category_id" id="category" placeholder="please choose">
                                 <option value="" disabled selected>Select category...</option>
-                                <template v-for="(category) in categories[form.type]">
+                                <template v-for="(category) in categoryStore.list[form.type]">
                                     <option :value="category.id">{{ category.name }}</option>
                                 </template>
                             </SelectInput>
@@ -140,8 +150,8 @@ const deleteTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <div class="flex justify-between">
-                                <InputLabel class="mb-2" for="amount">Amount</InputLabel>
+                            <div class="mb-2 flex justify-between">
+                                <InputLabel for="amount">Amount <span class="text-red-500">*</span></InputLabel>
                                 <span class="text-primary-600 dark:text-primary-500 font-bold" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
                                 <span class="text-red-600 dark:text-red-500 font-bold" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
@@ -150,8 +160,8 @@ const deleteTransaction = () => {
                         </div>
 
                         <div class="py-2">
-                            <InputLabel class="mb-2" for="description">Description</InputLabel>
-                            <TextareaInput id="description" v-model="form.description" rows="4" placeholder="Add a quick note about this transaction..." />
+                            <InputLabel class="mb-2" for="description">Description <span class="font-thin">(optional)</span></InputLabel>
+                            <TextareaInput id="description" v-model="form.description" rows="4" placeholder="Add a quick note about this transaction..." maxlength="200" />
                             <InputError :message="form.errors.description" class="mt-2" />
                         </div>
 

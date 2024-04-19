@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { useForm } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from '@/Components//TextInput.vue';
+import TextareaInput from '@/Components//TextareaInput.vue';
 import InputError from '@/Components//InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import DangerButton from '@/Components/DangerButton.vue';
@@ -23,6 +24,7 @@ const props = defineProps<{
 const form = useForm({
     type: Type.Expense as any,
     name: '' as any,
+    description: '' as any,
 });
 
 const modalOpened = ref(false);
@@ -42,6 +44,7 @@ onMounted(() => {
 
     form.type = props.category.type_id;
     form.name = props.category.name;
+    form.description = props.category.description;
 })
 
 const submitCategory = () => {
@@ -69,7 +72,6 @@ const deleteCategory = () => {
             form.reset();
             closeModal();
         },
-        onFinish: () => form.reset(),
     })
 }
 
@@ -109,13 +111,18 @@ const deleteCategory = () => {
                             <InputError :message="form.errors.type" class="mt-2" />
                         </div>
 
-
                         <div class="py-2">
                             <div class="flex justify-between">
-                                <InputLabel class="mb-2" for="name">Name</InputLabel>
+                                <InputLabel class="mb-2" for="name">Name <span class="text-red-500">*</span></InputLabel>
                             </div>
                             <TextInput id="name" class="w-full text-sm" type="text" required v-model="form.name" maxlength="100" />
                             <InputError :message="form.errors.name" class="mt-2" />
+                        </div>
+
+                        <div class="py-2">
+                            <InputLabel class="mb-2" for="description">Description <span class="font-thin">(optional)</span></InputLabel>
+                            <TextareaInput id="description" v-model="form.description" rows="4" placeholder="Add a quick note about this category..." maxlength="200"/>
+                            <InputError :message="form.errors.description" class="mt-2" />
                         </div>
 
                     </div>

@@ -24,6 +24,7 @@ class CategoryResource extends JsonResource
             'type_id' => $category->type,
             'type' => TransactionType::from($category->type)->name,
             'name' => $category->name,
+            'description' => $category->description,
         ];
     }
 }
