@@ -324,7 +324,7 @@ import { Link } from '@inertiajs/vue3';
                 </button>
                 <!-- Dropdown menu -->
                 <div
-                    class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
+                    class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg dark:bg-gray-700 dark:divide-gray-600"
                     id="apps-dropdown"
                 >
                     <div
