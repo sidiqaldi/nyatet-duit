@@ -143,7 +143,7 @@ const updateCategory = (id: any) => {
                             <SelectInput required v-model="form.category_id" id="category" placeholder="please choose">
                                 <option value="" disabled selected>Select category...</option>
                                 <template v-for="(category) in categoryStore.list[form.type]">
-                                    <option :value="category.id">{{ category.name }}</option>
+                                    <option :value="category.id" class="dark:text-gray-300 my-1">{{ category.name }}</option>
                                 </template>
                             </SelectInput>
                             <InputError :message="form.errors.category_id" class="mt-2" />

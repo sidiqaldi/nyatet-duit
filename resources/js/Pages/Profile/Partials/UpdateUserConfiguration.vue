@@ -4,8 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectInput from '@/Components/SelectInput.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
-import CurrencyList from 'currency-list';
-import { listOfTimezones, languageLocale } from '@/localeAndTimezone';
+import { listOfTimezones, languageLocale, currencies } from '@/localeAndTimezone';
 
 defineProps<{
     mustVerifyEmail?: Boolean;
@@ -19,8 +18,6 @@ const form = useForm({
     locale: user.locale,
     timezone: user.timezone,
 });
-
-const currencies = CurrencyList.getAll('en_US');
 </script>
 
 <template>
@@ -46,7 +43,7 @@ const currencies = CurrencyList.getAll('en_US');
                     autocomplete="locale"
                 >
                     <template v-for="name, key in languageLocale">
-                        <option :value="key">{{ name }}</option>
+                        <option :value="key" class="dark:text-gray-300 my-1">{{ name }}</option>
                     </template>
                 </SelectInput>
 
@@ -65,7 +62,7 @@ const currencies = CurrencyList.getAll('en_US');
                     autocomplete="Currency"
                 >
                     <template v-for="currency, code in currencies">
-                        <option :value="code">{{ currency.name }}</option>
+                        <option :value="code" class="dark:text-gray-300 my-1">{{ currency.name }}</option>
                     </template>
                 </SelectInput>
 
@@ -84,7 +81,7 @@ const currencies = CurrencyList.getAll('en_US');
                     autocomplete="timezone"
                 >
                     <template v-for="country, code in listOfTimezones">
-                        <option :value="code">{{ country }}</option>
+                        <option :value="code" class="dark:text-gray-300 my-1">{{ country }}</option>
                     </template>
                 </SelectInput>
 

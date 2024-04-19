@@ -51,8 +51,8 @@ class ReportController extends Controller
 
         /** @var Transaction */
         foreach ($expenses as $transaction) {
-            $data[$transaction->category->name] = isset($data[$transaction->category->name])
-                ? $data[$transaction->category->name] + $transaction->amount
+            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name  ?? 'Uncategorized'])
+                ? $data[$transaction->category->name ?? 'Uncategorized'] + $transaction->amount
                 : $transaction->amount;
         }
 
@@ -82,8 +82,8 @@ class ReportController extends Controller
 
         /** @var Transaction */
         foreach ($incomes as $transaction) {
-            $data[$transaction->category->name] = isset($data[$transaction->category->name])
-                ? $data[$transaction->category->name] + $transaction->amount
+            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name  ?? 'Uncategorized'])
+                ? $data[$transaction->category->name ?? 'Uncategorized'] + $transaction->amount
                 : $transaction->amount;
         }
 

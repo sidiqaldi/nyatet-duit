@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\TransactionExport;
+use App\Imports\TransactionImport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use Maatwebsite\Excel\Facades\Excel;
@@ -26,8 +28,14 @@ class BackupController extends Controller
     {
         $headings = (new HeadingRowImport)->toArray($request->file);
 
-        if ($headings != ['test', 'test']) {
-            abort(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $validatedValue = [[["date", "type", "category", "amount",  "description"]]];
+
+        if ($headings != $validatedValue) {
+            return redirect()->back()->withErrors(['files', __('Invalid header file')]);
         }
+
+        Excel::import(new TransactionImport($period, Auth::id()), $request->file);
+
+        return redirect()->back()->with('success', 'Import process done.');
     }
 }

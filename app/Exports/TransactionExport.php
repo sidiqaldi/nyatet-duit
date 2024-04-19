@@ -27,13 +27,15 @@ class TransactionExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        [$start, $end] = Utils::defaultDateByPeriod($this->period);
+        $query = Transaction::with('category')->currentUser();
 
-        return Transaction::with('category')
-            ->dateBetween($start, $end)
-            ->currentUser()
-            ->get()
-            ->transform(function ($transaction) {
+        if ($this->period != 'all') {
+            [$start, $end] = Utils::defaultDateByPeriod($this->period);
+
+            $query->dateBetween($start, $end);
+        }
+
+        return $query->get()->transform(function ($transaction) {
                 return [
                     'date' => $transaction->date,
                     'type' => TransactionType::from($transaction->type)->name,
