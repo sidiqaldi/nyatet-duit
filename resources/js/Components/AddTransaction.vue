@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import TransactionType from '@/Enums/TransactionType'
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
@@ -14,18 +14,22 @@ import Type from '@/Enums/TransactionType';
 import dayjs from 'dayjs';
 import { formatNumber } from '@/utils';
 import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
-import { useCategoriesStore } from '@/store';
+import { useCategoriesStore, usePeriodStore } from '@/store';
+import { onUpdated } from 'vue';
+import { useToast } from "vue-toastification";
 
 const openingInput = ref(false);
 
 const categoryStore = useCategoriesStore()
+const periodStore = usePeriodStore()
+const toast = useToast();
 
 const form = useForm({
     type: Type.Expense as any,
     category_id: "",
     amount: null,
     time: dayjs().format('HH:mm'),
-    date: dayjs().format('YYYY-MM-DD'),
+    date: periodStore.active,
     description: '',
 })
 
@@ -41,6 +45,7 @@ const submitTransaction = () => {
         onSuccess: () => {
             form.reset();
             closeModal();
+            toast.success('New record added!', {timeout:2000});
         },
     })
 }
@@ -49,6 +54,9 @@ const updateCategory = (id: any) => {
     form.category_id = id
 }
 
+onUpdated(() => {
+    form.date = periodStore.active;
+})
 </script>
 <template>
     <div class="flex items-center justify-center">

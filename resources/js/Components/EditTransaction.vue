@@ -17,12 +17,14 @@ import DangerButton from './DangerButton.vue';
 import { formatNumber } from '@/utils';
 import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
 import { useCategoriesStore } from '@/store';
+import { useToast } from "vue-toastification";
 
 const emit = defineEmits<{
     (e: 'close', id: number): void
 }>()
 
-const categoryStore = useCategoriesStore()
+const categoryStore = useCategoriesStore();
+const toast = useToast();
 
 const props = defineProps<{
     transaction: TransactionModel
@@ -64,8 +66,8 @@ const submitTransaction = () => {
         onSuccess: () => {
             form.reset();
             closeModal();
+            toast.success('Record updated!', {timeout:2000});
         },
-        onFinish: () => form.reset(),
     })
 }
 

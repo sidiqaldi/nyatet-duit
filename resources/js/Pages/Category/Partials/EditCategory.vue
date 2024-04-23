@@ -11,6 +11,7 @@ import InputError from '@/Components//InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import Type from '@/Enums/TransactionType';
+import { useToast } from "vue-toastification";
 import { onMounted } from 'vue';
 
 const emit = defineEmits<{
@@ -20,6 +21,8 @@ const emit = defineEmits<{
 const props = defineProps<{
     category: any
 }>();
+
+const toast = useToast();
 
 const form = useForm({
     type: Type.Expense as any,
@@ -53,6 +56,7 @@ const submitCategory = () => {
         onSuccess: () => {
             form.reset();
             closeModal();
+            toast.success('Category updated!', {timeout:2000});
         },
     })
 }

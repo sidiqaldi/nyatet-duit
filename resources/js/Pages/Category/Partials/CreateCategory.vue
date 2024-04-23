@@ -12,7 +12,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import Type from '@/Enums/TransactionType';
 import axios from 'axios';
 import { useCategoriesStore } from '@/store';
-import { onMounted } from 'vue';
+import { useToast } from "vue-toastification";
 import { onUpdated } from 'vue';
 
 const categoryStore = useCategoriesStore();
@@ -22,6 +22,8 @@ const props = defineProps<{
     ajax?: Boolean;
     type?: String;
 }>()
+
+const toast = useToast();
 
 const emit = defineEmits<{
     (e: 'newCategoryAdded', id: number): void
@@ -63,6 +65,8 @@ const submitCategory = () => {
 
             emit('newCategoryAdded', category.id);
 
+            toast.success('New category added!', {timeout:2000});
+
             closeModal();
 
         }).catch((err) => {
@@ -81,6 +85,7 @@ const callInertiaForm  = () => {
         onSuccess: () => {
             form.reset();
             closeModal();
+            toast.success('New category added!', {timeout:2000});
         },
     })
 }

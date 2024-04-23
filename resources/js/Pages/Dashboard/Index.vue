@@ -13,7 +13,6 @@ defineProps<{
     period: any,
 }>();
 
-
 </script>
 
 <template>

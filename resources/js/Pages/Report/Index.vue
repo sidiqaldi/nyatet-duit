@@ -14,6 +14,8 @@ import '@/../css/datepicker.css';
 import { onBeforeMount } from 'vue';
 import dayjs from 'dayjs';
 
+import { usePeriodStore } from '@/store';
+
 const props = defineProps<{
     expensePieData?: any;
     incomePieData?: any;
@@ -26,12 +28,16 @@ const datePeriod = ref({
     year: props.period.year,
 });
 
+const periodStore = usePeriodStore();
+
 const datepicker = ref<DatePickerInstance>(null);
 
 const darkMode = ref(false);
 
 onBeforeMount(() => {
-    darkMode.value = activeTheme.value === dark
+    darkMode.value = activeTheme.value === dark;
+
+    periodStore.set(datePeriod.value.year, datePeriod.value.month)
 })
 
 const form = useForm({
@@ -51,6 +57,8 @@ const changePeriod = (modelData: any) => {
     month = month < 10 ? '0' + month : month;
 
     form.period = modelData.year + '-' + month;
+
+    periodStore.set(modelData.year, modelData.month);
 
     form.get(route('reports.index'), {
         preserveScroll: true,

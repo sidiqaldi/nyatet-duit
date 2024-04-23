@@ -26,6 +26,7 @@
         "chart.js": "^4.4.2",
         "dayjs": "^1.11.10",
         "pinia": "^2.1.7",
-        "vue-debounce": "^5.0.0"
+        "vue-debounce": "^5.0.0",
+        "vue-toastification": "^2.0.0-rc.5"
     }
 }

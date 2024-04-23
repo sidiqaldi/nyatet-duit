@@ -13,6 +13,7 @@ import { useForm, usePage } from '@inertiajs/vue3';
 import { formatNumber } from '@/utils';
 import type { DatePickerInstance } from "@vuepic/vue-datepicker"
 import { useCategoriesStore } from '@/store';
+import { usePeriodStore } from '@/store';
 
 import '@vuepic/vue-datepicker/dist/main.css';
 import '@/../css/datepicker.css';
@@ -26,6 +27,7 @@ const props = defineProps<{
 }>();
 
 const categoryStore = useCategoriesStore()
+const periodStore = usePeriodStore();
 
 const datePeriod = ref({
     month: new Date().getMonth(),
@@ -48,6 +50,8 @@ onMounted(() => {
         year: year,
     }
 
+    periodStore.set(year, month);
+
     let formMonth = props.period.month < 10 ? '0' + props.period.month : props.period.month;
 
     form.period = year + '-' + formMonth;
@@ -69,6 +73,8 @@ const changePeriod = (modelData: any) => {
     month = month < 10 ? '0' + month : month;
 
     form.period = modelData.year + '-' + month;
+
+    periodStore.set(modelData.year, modelData.month);
 
     handleFilter();
 }
