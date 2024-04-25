@@ -170,7 +170,7 @@ const submitSetBudget = () => {
                 </div>
             </div>
 
-            <nav class="flex flex-col sm:flex-row justify-between bg-white px-5 pb-5" aria-label="Page navigation example">
+            <nav class="flex flex-col sm:flex-row justify-between px-5 pb-5 bg-white dark:text-white dark:bg-gray-800" aria-label="Page navigation example">
                 <div class="flex mb-2 sm:mb-0 justify-center">
                     <PrimaryButton v-if="canCreate" @click="openModalSetBudget">Set from past</PrimaryButton>
                 </div>
