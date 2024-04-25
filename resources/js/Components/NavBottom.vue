@@ -2,7 +2,7 @@
 import AddTransaction from '@/Components/AddTransaction.vue';
 import IconPieChart from '@/Components/IconPieChart.vue';
 import IconWallet from '@/Components/IconWallet.vue';
-import IconArchive from '@/Components/IconArchive.vue';
+import IconCalendar from '@/Components/IconCalendar.vue';
 import IconTag from '@/Components/IconTag.vue';
 import NavBottomLink from '@/Components/NavBottomLink.vue';
 </script>
@@ -27,8 +27,8 @@ import NavBottomLink from '@/Components/NavBottomLink.vue';
                 <IconTag class="icon-bottom" />
             </NavBottomLink>
 
-            <NavBottomLink position="right" label="Backup" :href="route('backups.index')">
-                <IconArchive class="icon-bottom" />
+            <NavBottomLink position="right" label="Budgets" :href="route('budgets.index')">
+                <IconCalendar class="icon-bottom" />
             </NavBottomLink>
         </div>
     </div>

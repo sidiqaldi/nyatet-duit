@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\HomeController;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('backups', BackupController::class)
         ->only('index', 'show', 'update')
         ->parameters(['backups' => 'period']);
+
+    Route::resource('budgets', BudgetController::class)->only('index', 'store', 'destroy');
 
     Route::resource('profile', ProfileController::class)->only('index', 'store', 'destroy');
 

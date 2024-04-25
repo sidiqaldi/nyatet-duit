@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * @property HasMany|Collection categories
  * @property HasMany|Collection transactions
+ * @property HasMany|Collection budgets
  */
 class User extends Authenticatable
 {
@@ -46,5 +47,10 @@ class User extends Authenticatable
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
     }
 }
