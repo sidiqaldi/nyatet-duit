@@ -82,7 +82,7 @@
         </section>
 
         <div class="my-10 w-full p-4 text-center bg-white rounded-lg sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Want deploy to your own environtment?</h5>
+            <h5 class="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Want to deploy to your own environment?</h5>
             <p class="mb-10 max-w-screen-md mx-auto text-base text-gray-500 sm:text-lg dark:text-gray-400">
                 {{ config('app.name') }} source is open-source and available on GitHub, allowing users to access, modify, and install the application in their own environments. With the source code freely accessible, developers and enthusiasts can customize to their liking or self-host it for personal use.
             </p>
