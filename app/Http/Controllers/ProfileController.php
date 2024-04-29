@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 
 class ProfileController extends Controller
 {
@@ -34,7 +35,7 @@ class ProfileController extends Controller
         return Redirect::route('profile.index');
     }
 
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): HttpFoundationResponse
     {
         $request->validate([
             'password' => ['required', 'current_password'],
@@ -49,6 +50,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Inertia::location('/');
     }
 }

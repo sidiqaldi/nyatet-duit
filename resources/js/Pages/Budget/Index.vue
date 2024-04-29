@@ -312,7 +312,6 @@ const submitSetBudget = () => {
             <div class="ms-3 text-lg">Plese wait...</div>
         </div>
 
-
         <div v-else class="py-8 px-6">
             <form @submit.prevent="submitSetBudget" class="mx-auto">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
