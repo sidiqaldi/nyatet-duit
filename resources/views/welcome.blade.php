@@ -7,6 +7,9 @@
 
         <title>Simplify Finances with {{ config('app.name') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" sizes="any" type="image/svg+xml">
+        @if(app()->isProduction())
+        <link rel="manifest" href="/manifest.json">
+        @endif
 
         <!-- Styles -->
         <script>
