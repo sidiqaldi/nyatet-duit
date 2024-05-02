@@ -27,24 +27,28 @@ cp .env.example .env
 ```bash
 php artisan key:generate
 ```
-6. Update the `.env` file with your database connection details. Set the `DB_CONNECTION` to `sqlite` and update the `DB_DATABASE` path to point to your SQLite database file:
+6. Generate an application key:
+```bash
+php artisan storage:link
+```
+7. Update the `.env` file with your database connection details. Set the `DB_CONNECTION` to `sqlite` and update the `DB_DATABASE` path to point to your SQLite database file:
 ```env
 DB_CONNECTION=sqlite
 DB_DATABASE=/path/to/database.sqlite
 ```
-7. Create an empty SQLite database file:
+8. Create an empty SQLite database file:
 ```bash
 touch database/database.sqlite
 ```
-8. Run the database migrations and seed the database:
+9. Run the database migrations and seed the database:
 ```bash
-php artisan migrate --seed
+php artisan migrate
 ```
-9. Install NPM dependency and Build asset
+10. Install NPM dependency and Build asset
 ```bash
 npm ci && npm run build
 ```
-10. Serve the application:
+11. Serve the application:
 ```bash
 php artisan serve
 ```
