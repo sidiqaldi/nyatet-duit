@@ -3,6 +3,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/manifest.json
+/public/icon-192x192.svg
+/public/icon-512x512.svg
 /storage/*.key
 /vendor
 .env

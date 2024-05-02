@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Explore {{ config('app.name') }}, a user-friendly finance management application designed for simplicity and effectiveness. With intuitive budgeting tools, easy expense tracking, and insightful reports, {{ config('app.name') }} empowers users to manage their finances effortlessly. Install {{ config('app.name') }} now and simplify your financial journey!">
 
-        <title>{{ config('app.name') }}</title>
+        <title>Streamline Your Finances with {{ config('app.name') }}: A Simple and Effective Finance Management Solution</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" sizes="any" type="image/svg+xml">
 
         <!-- Styles -->
