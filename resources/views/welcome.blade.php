@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Explore {{ config('app.name') }}, a user-friendly finance management application designed for simplicity and effectiveness. With intuitive budgeting tools, easy expense tracking, and insightful reports, {{ config('app.name') }} empowers users to manage their finances effortlessly. Install {{ config('app.name') }} now and simplify your financial journey!">
 
-        <title>Simplify Finances with {{ config('app.name') }}</title>
+        <title>Simplify your Finances with {{ config('app.name') }}</title>
         <link rel="icon" href="{{ asset('favicon.svg') }}" sizes="any" type="image/svg+xml">
         @if(app()->isProduction())
         <link rel="manifest" href="/manifest.json">
@@ -40,7 +40,7 @@
                         Github
                     </a>
                 </div>
-                <div class="lg:mt-0 lg:col-span-5 lg:flex">
+                <div class="mt-10 lg:mt-0 lg:col-span-5 lg:flex">
                     <img class="block dark:hidden rounded shadow border" src="{{ asset('screenshot-light.png') }}" alt="screenshot">
                     <img class="hidden dark:block rounded shadow border" src="{{ asset('screenshot-dark.png') }}" alt="screenshot">
                 </div>
