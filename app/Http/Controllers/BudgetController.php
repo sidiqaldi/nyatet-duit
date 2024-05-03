@@ -25,7 +25,7 @@ class BudgetController extends Controller
                 $query->selectRaw('category_id, SUM(amount) * -1 as total_amount, date')
                     ->whereBetween('date', [
                         $period->startOfMonth()->format('Y-m-d'),
-                        $period->endOfMonth()->format('Y-m-d')
+                        $period->endOfMonth()->format('Y-m-d'),
                     ])
                     ->groupBy('category_id');
             }])

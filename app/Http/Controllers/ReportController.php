@@ -43,7 +43,7 @@ class ReportController extends Controller
         $expenses = QueryBuilder::for(Transaction::class)
             ->with('category')
             ->where('type', TransactionType::Expense)
-            ->dateBetween($start, $end)
+            ->dateBetween($start->format('Y-m-d'), $end->format('Y-m-d'))
             ->currentUser()
             ->get();
 
@@ -51,7 +51,7 @@ class ReportController extends Controller
 
         /** @var Transaction */
         foreach ($expenses as $transaction) {
-            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name  ?? 'Uncategorized'])
+            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name ?? 'Uncategorized'])
                 ? $data[$transaction->category->name ?? 'Uncategorized'] + $transaction->amount
                 : $transaction->amount;
         }
@@ -74,7 +74,7 @@ class ReportController extends Controller
         $incomes = QueryBuilder::for(Transaction::class)
             ->with('category')
             ->where('type', TransactionType::Income)
-            ->dateBetween($start, $end)
+            ->dateBetween($start->format('Y-m-d'), $end->format('Y-m-d'))
             ->currentUser()
             ->get();
 
@@ -82,7 +82,7 @@ class ReportController extends Controller
 
         /** @var Transaction */
         foreach ($incomes as $transaction) {
-            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name  ?? 'Uncategorized'])
+            $data[$transaction->category->name ?? 'Uncategorized'] = isset($data[$transaction->category->name ?? 'Uncategorized'])
                 ? $data[$transaction->category->name ?? 'Uncategorized'] + $transaction->amount
                 : $transaction->amount;
         }
@@ -111,8 +111,8 @@ class ReportController extends Controller
                 DB::raw('DATE(date) as transaction_date'),
                 DB::raw('COALESCE(SUM(amount), 0) * -1 as total_amount')
             )
-            ->where('date', '>=', $startDate)
-            ->where('date', '<=', $endDate)
+            ->where('date', '>=', $startDate->format('Y-m-d'))
+            ->where('date', '<=', $endDate->format('Y-m-d'))
             ->where('Type', TransactionType::Expense)
             ->where('user_id', request()->user()->id)
             ->groupBy('transaction_date')
@@ -131,8 +131,8 @@ class ReportController extends Controller
                 DB::raw('DATE(date) as transaction_date'),
                 DB::raw('COALESCE(SUM(amount), 0) as total_amount')
             )
-            ->where('date', '>=', $startDate)
-            ->where('date', '<=', $endDate)
+            ->where('date', '>=', $startDate->format('Y-m-d'))
+            ->where('date', '<=', $endDate->format('Y-m-d'))
             ->where('Type', TransactionType::Income)
             ->where('user_id', request()->user()->id)
             ->groupBy('transaction_date')

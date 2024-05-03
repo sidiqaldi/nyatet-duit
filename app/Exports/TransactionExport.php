@@ -36,13 +36,13 @@ class TransactionExport implements FromCollection, WithHeadings
         }
 
         return $query->get()->transform(function ($transaction) {
-                return [
-                    'date' => $transaction->date,
-                    'type' => TransactionType::from($transaction->type)->name,
-                    'category' => $transaction->category->name ?? '',
-                    'amount' => $transaction->amount,
-                    'description' => $transaction->description,
-                ];
-            });
+            return [
+                'date' => $transaction->date,
+                'type' => TransactionType::from($transaction->type)->name,
+                'category' => $transaction->category->name ?? '',
+                'amount' => $transaction->amount,
+                'description' => $transaction->description,
+            ];
+        });
     }
 }

@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Transaction;
 use App\Utils;
 use Carbon\Carbon;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -16,7 +15,6 @@ class TransactionImport implements ToCollection, WithHeadingRow
 {
     public function __construct(public string $period, public int $userId)
     {
-
     }
 
     public function collection(Collection $collection)
@@ -33,8 +31,7 @@ class TransactionImport implements ToCollection, WithHeadingRow
 
         $query->delete();
 
-        foreach ($collection as $row)
-        {
+        foreach ($collection as $row) {
             if ($this->period != 'all') {
                 $rowDate = Carbon::parse($row['date']);
 
@@ -58,17 +55,18 @@ class TransactionImport implements ToCollection, WithHeadingRow
         $category = $row['category']
             ? Category::firstOrCreate([
                 'user_id' => $this->userId,
+                'type' => TransactionType::fromName($row['type']),
                 'name' => $row['category'],
             ])->id
             : null;
 
         Transaction::create([
             'user_id' => $this->userId,
-            'date'=>  $row['date'],
-            'type' =>  TransactionType::fromName($row['type']),
+            'date' => $row['date'],
+            'type' => TransactionType::fromName($row['type']),
             'category_id' => $category,
-            'amount' =>  $row['amount'],
-            'description' =>  $row['description'],
+            'amount' => $row['amount'],
+            'description' => $row['description'],
         ]);
     }
 }

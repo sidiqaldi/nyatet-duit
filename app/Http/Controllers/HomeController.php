@@ -24,12 +24,12 @@ class HomeController extends Controller
         [$start, $end] = Utils::defaultDate($period);
 
         $totalExpenseThisMonth = Transaction::where('type', TransactionType::Expense)
-            ->dateBetween($start, $end)
+            ->dateBetween($start->format('Y-m-d'), $end->format('Y-m-d'))
             ->currentUser()
             ->sum('amount');
 
         $totalIncomeThisMonth = Transaction::where('type', TransactionType::Income)
-            ->dateBetween($start, $end)
+            ->dateBetween($start->format('Y-m-d'), $end->format('Y-m-d'))
             ->currentUser()
             ->sum('amount');
 
@@ -37,7 +37,7 @@ class HomeController extends Controller
         $transactions = QueryBuilder::for(Transaction::class)
             ->allowedFilters(Utils::defaultTransactionFilter())
             ->defaultSort(['-date', '-created_at'])
-            ->dateBetween($start, $end)
+            ->dateBetween($start->format('Y-m-d'), $end->format('Y-m-d'))
             ->currentUser()
             ->paginate(15);
 

@@ -4,9 +4,9 @@ namespace App\Http\Requests\Budget;
 
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Database\Query\Builder;
 
 /**
  *  * @method User user

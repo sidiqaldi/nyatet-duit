@@ -22,7 +22,7 @@ class BudgetResource extends JsonResource
             'id' => $budget->id,
             'category_id' => $budget->category_id,
             'category_name' => $budget->category->name ?? '-',
-            'period' => $budget->year . '-' . $budget->month,
+            'period' => $budget->year.'-'.$budget->month,
             'year' => $budget->year,
             'month' => $budget->month,
             'amount' => $budget->amount,

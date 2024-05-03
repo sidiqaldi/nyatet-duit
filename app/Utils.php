@@ -10,8 +10,8 @@ class Utils
     public static function defaultTransactionFilter(): array
     {
         return [
-            'type',
-            'category_id',
+            AllowedFilter::exact('type'),
+            AllowedFilter::exact('category_id'),
             AllowedFilter::scope('search'),
         ];
     }

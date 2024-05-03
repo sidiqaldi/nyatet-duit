@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\TransactionExport;
 use App\Imports\TransactionImport;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -28,7 +27,7 @@ class BackupController extends Controller
     {
         $headings = (new HeadingRowImport)->toArray($request->file);
 
-        $validatedValue = [[["date", "type", "category", "amount",  "description"]]];
+        $validatedValue = [[['date', 'type', 'category', 'amount',  'description']]];
 
         if ($headings != $validatedValue) {
             return redirect()->back()->withErrors(['files', __('Invalid header file')]);
