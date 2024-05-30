@@ -13,6 +13,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
+        "resend/resend-laravel": "^0.11.0",
         "spatie/laravel-query-builder": "^5.8",
         "tightenco/ziggy": "^2.0"
     },
