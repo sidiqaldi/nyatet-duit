@@ -8,9 +8,10 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { formatNumber } from '@/utils';
+import { formatNumber, getCurrencyOptions } from '@/utils';
 import { ref } from 'vue';
 import axios from 'axios';
+import InputCurrency from '@/Components/InputCurrency.vue';
 
 const props = defineProps<{
     date: {year: number, month: number};
@@ -31,6 +32,8 @@ const submitDeleteBudget = () => {
 }
 
 const modalSetBudgetOpen = ref(false);
+
+const currencyOptions = ref(getCurrencyOptions())
 
 const formInsertBudget = useForm({
     year: props.date.year,
@@ -288,7 +291,7 @@ const submitSetBudget = () => {
                             <td class="px-6 py-4 flex justify-end">
                                 <form @submit.prevent="submitBudget" v-if="formInsertBudget.category_id === category.id">
                                     <div class="flex gap-2 flex-wrap">
-                                        <TextInput type="number" v-model="formInsertBudget.amount" />
+                                        <InputCurrency v-model="formInsertBudget.amount" :options="currencyOptions"/>
                                         <PrimaryButton type="submit">save</PrimaryButton>
                                         <SecondaryButton @click="formInsertBudget.category_id = null">cancel</SecondaryButton>
                                     </div>

@@ -12,11 +12,12 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextareaInput from '@/Components/TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import dayjs from 'dayjs';
-import { formatNumber } from '@/utils';
+import { formatNumber, getCurrencyOptions } from '@/utils';
 import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
 import { useCategoriesStore, usePeriodStore } from '@/store';
 import { onUpdated } from 'vue';
 import { useToast } from "vue-toastification";
+import InputCurrency from './InputCurrency.vue';
 
 const openingInput = ref(false);
 
@@ -27,7 +28,7 @@ const toast = useToast();
 const form = useForm({
     type: Type.Expense as any,
     category_id: "",
-    amount: null,
+    amount: 0,
     time: dayjs().format('HH:mm'),
     date: periodStore.active,
     description: '',
@@ -49,6 +50,8 @@ const submitTransaction = () => {
         },
     })
 }
+
+const currencyOptions = ref(getCurrencyOptions())
 
 const updateCategory = (id: any) => {
     form.category_id = id
@@ -127,7 +130,7 @@ onUpdated(() => {
                                 <span class="text-primary-600 dark:text-primary-500 font-bold" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
                                 <span class="text-red-600 dark:text-red-500 font-bold" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
-                            <TextInput id="amount" class="w-full text-sm" type="number" required v-model="form.amount" min="0" max="10000000000" :placeholder="formatNumber(1000)" />
+                            <InputCurrency id="amount" v-model="form.amount" :options="currencyOptions"/>
                             <InputError :message="form.errors.amount" class="mt-2" />
                         </div>
 

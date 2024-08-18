@@ -19,13 +19,14 @@
         "typescript": "^5.0.2",
         "vite": "^5.0",
         "vue": "^3.4.0",
-        "vue-tsc": "^1.8.27"
+        "vue-tsc": "^2.0.29"
     },
     "dependencies": {
         "@vuepic/vue-datepicker": "^8.4.0",
         "chart.js": "^4.4.2",
         "dayjs": "^1.11.10",
         "pinia": "^2.1.7",
+        "vue-currency-input": "^3.1.0",
         "vue-debounce": "^5.0.0",
         "vue-toastification": "^2.0.0-rc.5"
     }

@@ -24,11 +24,14 @@
     </head>
     <body class="font-sans antialiased dark:bg-gray-900 dark:text-white/50">
         <section class="bg-white dark:bg-gray-900">
-            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+            <div class="pt-20 grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
                 <div class="mr-auto place-self-center lg:col-span-7">
                     <h1 class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
-                        <x-logo class="size-14 mb-2 inline" /> {{ config('app.name') }} - Manage Your Finances with Ease
+                        <x-logo class="size-14 mb-2 inline" /> <span class="whitespace-nowrap">{{ config('app.name') }}</span>
                     </h1>
+                    <h2 class="max-w-2xl mb-4 text-3xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-4xl dark:text-white">
+                        Manage Your Finances with Ease
+                    </h2>
                     <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                         Where simplicity meets smart finance management.
                     </p>

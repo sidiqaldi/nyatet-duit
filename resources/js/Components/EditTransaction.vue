@@ -14,10 +14,11 @@ import TextareaInput from './TextareaInput.vue';
 import Type from '@/Enums/TransactionType';
 import { onMounted } from 'vue';
 import DangerButton from './DangerButton.vue';
-import { formatNumber } from '@/utils';
+import { formatNumber, getCurrencyOptions } from '@/utils';
 import CreateCategory from '@/Pages/Category/Partials/CreateCategory.vue';
 import { useCategoriesStore } from '@/store';
 import { useToast } from "vue-toastification";
+import InputCurrency from './InputCurrency.vue';
 
 const emit = defineEmits<{
     (e: 'close', id: number): void
@@ -33,7 +34,7 @@ const props = defineProps<{
 const form = useForm({
     type: Type.Expense as any,
     category_id: null as any,
-    amount: null as any,
+    amount: 0,
     date: '' as any,
     description: '' as any,
 });
@@ -41,6 +42,8 @@ const form = useForm({
 const modalOpened = ref(false);
 
 const showDeleteConfirmation = ref(false);
+
+const currencyOptions = ref(getCurrencyOptions())
 
 const closeModal = () => {
     modalOpened.value = false;
@@ -157,7 +160,14 @@ const updateCategory = (id: any) => {
                                 <span class="text-primary-600 dark:text-primary-500 font-bold" v-if="form.type === Type.Income">{{ formatNumber(form.amount) }}</span>
                                 <span class="text-red-600 dark:text-red-500 font-bold" v-else>{{ formatNumber(form.amount) }}</span>
                             </div>
-                            <TextInput id="amount" class="w-full text-sm" type="number" required v-model="form.amount" min="0" max="10000000000" :placeholder="formatNumber(1000)" />
+                            <InputCurrency
+                                id="amount"
+                                required
+                                min="0"
+                                max="10000000000"
+                                v-model="form.amount"
+                                :options="currencyOptions"
+                            />
                             <InputError :message="form.errors.amount" class="mt-2" />
                         </div>
 
