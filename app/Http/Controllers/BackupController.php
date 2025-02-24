@@ -20,7 +20,15 @@ class BackupController extends Controller
 
     public function show(string $period)
     {
-        return Excel::download(new TransactionExport($period), "backup-{$period}.xlsx");
+        if ($period == 'all') {
+            $now = now()->format('Ymd-His');
+
+            $name = "backup-{$period}-{$now}.xlsx";
+        } else {
+            $name = "backup-{$period}.xlsx";
+        }
+
+        return Excel::download(new TransactionExport($period), $name);
     }
 
     public function update(string $period, Request $request)
