@@ -226,18 +226,16 @@ const toggleCategorySelection = (categoryId: number) => {
                                     <IconCaretUp v-if="transaction.type_id === Type.Income" class="text-primary-500 dark:text-primary-400"/>
                                     <IconCaretDown v-else class="text-red-600 dark:text-red-500 "/>
                                     <div class="flex-1 min-w-0 ms-4">
-                                        <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                            {{ transaction.category }}
-                                        </p>
-                                        <p class="text-xs text-gray-500 truncate dark:text-gray-400">
-                                            {{ transaction.date }}
-                                        </p>
+                                        <div class="sm:flex sm:items-center">
+                                            <div class="text-xs text-gray-500 truncate dark:text-gray-400">{{ transaction.date }}</div>
+                                            <div :title="transaction.category"
+                                                class="sm:ms-2 text-sm font-medium text-gray-900 truncate dark:text-white overflow-clip"
+                                            >{{ transaction.category }}</div>
+                                        </div>
+                                        <p :title="transaction.description"
+                                            class="block max-w-40 lg:max-w-60 text-sm text-gray-500 truncate dark:text-gray-400 font-normal overflow-clip"
+                                        >{{ transaction.description }}</p>
                                     </div>
-                                    <p :title="transaction.description"
-                                        class="hidden sm:block ms-10 max-w-40 lg:max-w-60 text-sm text-gray-500 truncate dark:text-gray-400 font-normal overflow-clip"
-                                    >
-                                        {{ transaction.description }}
-                                    </p>
                                 </div>
                                 <div class="display-nominal inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                     {{ formatNumber(transaction.amount) }}
@@ -249,7 +247,7 @@ const toggleCategorySelection = (categoryId: number) => {
                         <div class="bg-white dark:bg-gray-800 dark:border-gray-700">
                             <div class="p-3 text-center text-gray-400" colspan="4">
                                 Oops! It looks like there are no transactions recorded for the selected period. <br/> Start adding transactions to track your finances.
-                            </div>
+                            </div>``
                         </div>
                     </template>
                 </ul>
